@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["esnext", "dom"],
     "target": "esnext",
     "module": "esnext",
     "outDir": "dist",

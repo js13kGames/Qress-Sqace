@@ -1,8 +1,9 @@
+import Audio from './audio';
 import Thingy from './thingy';
 import { getContext } from './lib';
 import words from './words';
 
-let tutorial = ['_press_space', 'nice'];
+let tutorial = ['_qress_sqace', 'great_'];
 let tutorialFinished = 0;
 
 const sharedStart = (array: string[]) => {
@@ -76,6 +77,8 @@ const keydown = (e: KeyboardEvent) => {
     let key;
     if (e.key === ' ') {
         key = '_';
+
+        Audio.startMusic();
     } else {
         key = e.key;
     }
