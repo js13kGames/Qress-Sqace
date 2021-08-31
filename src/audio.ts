@@ -106,6 +106,7 @@ let mainGainNode: GainNode;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
+const secondsPerBeat = 60.0 / (90 * 4); // 180
 let nextNoteTime = 0.0;
 
 // @ts-ignore
@@ -152,6 +153,9 @@ function playTone(time: number, tone: number) {
     return osc;
 }
 
+// [octave, tone, from, length, character, type,   color
+// [     3,  'C',    3,      2,       '_', 'bass', 'red'
+
 const sheet: {
     tone: number;
     from: number;
@@ -177,12 +181,20 @@ const sheet: {
     { tone: noteFreq[5]['C'], from: 36, to: 37 },
     { tone: noteFreq[5]['D'], from: 38, to: 42 },
 
-    { tone: noteFreq[3]['G'], from: 48, to: 0 }, // bass
+    { tone: noteFreq[3]['G'], from: 48, to: 64 }, // bass
     { tone: noteFreq[5]['E'], from: 48, to: 51 },
     { tone: noteFreq[5]['E'], from: 52, to: 53 },
     { tone: noteFreq[5]['D'], from: 54, to: 57 },
     { tone: noteFreq[5]['C'], from: 58, to: 60 },
     { tone: noteFreq[4]['A'], from: 60, to: 62 },
+
+    { tone: noteFreq[5]['E'], from: 64, to: 65 },
+    { tone: noteFreq[5]['E'], from: 66, to: 67 },
+    { tone: noteFreq[5]['D'], from: 68, to: 69 },
+    { tone: noteFreq[5]['C'], from: 70, to: 71 },
+    { tone: noteFreq[4]['A'], from: 72, to: 73 },
+    { tone: noteFreq[4]['A'], from: 74, to: 75 },
+    { tone: noteFreq[4]['A'], from: 76, to: 80 },
 ];
 
 let tickCnt = 0;
@@ -199,21 +211,32 @@ const tick = (nextNoteTime: number) => {
         if (tickCnt === sheet.to) {
             if (sheet.osc) {
                 sheet.osc.stop(nextNoteTime);
+                sheet.osc = undefined;
             }
         }
     });
 
     tickCnt++;
-    if (tickCnt % 64 === 0) {
+    if (tickCnt % 128 === 0) {
         tickCnt = 0;
     }
 };
 
+let last4th = 0;
+let next4th = secondsPerBeat * 4;
 const scheduler = () => {
     while (nextNoteTime < _audC.currentTime + scheduleAheadTime) {
         tick(nextNoteTime);
-        const secondsPerBeat = 60.0 / (180 * 4);
+
         nextNoteTime += secondsPerBeat;
+
+        if (tickCnt % 4 === 0) {
+            console.log(
+                `nextNoteTime=${nextNoteTime}, currentTime=${_audC.currentTime}`
+            );
+            last4th = next4th;
+            next4th = nextNoteTime;
+        }
     }
     window.setTimeout(scheduler, lookahead);
 };
@@ -233,4 +256,50 @@ const startMusic = () => {
     scheduler();
 };
 
-export default { startMusic };
+const getTick = () => tickCnt;
+
+const getPrevNoteTime = () => nextNoteTime - secondsPerBeat;
+
+const getNextNoteTime = () => nextNoteTime;
+
+const getTime = () => _audC.currentTime;
+
+const getPlaying = () => {
+    let r = '>';
+    for (let i = 0; i < sheet.length; i++) {
+        const sheetI = sheet[i];
+        if (sheetI.osc && tickCnt >= sheetI.from && sheetI.to <= tickCnt) {
+            r += `[${sheetI.from},${sheetI.to}]`;
+        }
+    }
+    return r;
+};
+
+const getNext4th = () => {
+    // const remaining = 4 - (tickCnt % 4);
+
+    // const prevNote = nextNoteTime > 0 ? nextNoteTime - secondsPerBeat : 0;
+    // const next4th = prevNote + remaining * secondsPerBeat;
+
+    // const d = next4th - prevNote;
+    // const curretTime = _audC.currentTime;
+    // const d2 = next4th - curretTime;
+    // const p = d2 / d;
+
+    const t = _audC.currentTime;
+    const p = 1 - (next4th - t) / (next4th - last4th);
+    // console.log(`last=${last4th}, next=${next4th}, time=${t}, p=${p}`);
+
+    return p;
+};
+
+export default {
+    startMusic,
+    getTick,
+    getPlaying,
+    secondsPerBeat,
+    getPrevNoteTime,
+    getNextNoteTime,
+    getTime,
+    getNext4th,
+};

@@ -103,10 +103,21 @@ const keydown = (e: KeyboardEvent) => {
 
 /***************/
 
-const thingy = new Thingy(10, 100, 100, (i, ctx) => {
-    console.log(`drawing i=${i}`);
-    ctx.fillStyle = `rgb(0, ${i * 25}, 0)`;
-    ctx.fillRect(0, 0, 50, 50);
+const thingy = new Thingy(50, 400, 400, (i, ctx) => {
+    // console.log(`drawing i=${i}`);
+    // ctx.fillStyle = `rgb(0, ${i * 25}, 0)`;
+    // ctx.fillRect(0, 0, 200, 200);
+
+    for (var j = 0; j <= Math.PI * 2; j += Math.PI / 4) {
+        ctx.fillStyle =
+            'rgba(' + (255 - i * 2) + ', ' + (100 - i) + ', 255, 0.8)';
+        ctx.fillRect(
+            200 + Math.cos(j) * i * 3,
+            200 + Math.sin(j) * i * 3,
+            4 - i / 10,
+            4 - i / 10
+        );
+    }
 });
 
 let i = 0;
@@ -119,42 +130,55 @@ const draw = () => {
     ctx.fillStyle = `rgb(255, ${i}, 104)`;
     ctx.fillRect(0, 0, w, h);
 
-    ctx.fillStyle = 'black';
-    ctx.fillRect(mouseX - 25, mouseY - 25, 50, 50);
+    ctx.fillStyle = `rgb(255, 0, 0)`;
+    ctx.fillRect(50, 50, 500, 500);
 
-    ctx.drawImage(thingy.getFrame(), x, y);
+    const p = Audio.getNext4th();
+    ctx.fillStyle = `rgb(0, 255, 0)`;
+    ctx.fillRect(50, 50 + p * 500, 500, 10);
 
-    ctx.font = '30px Arial';
-    ctx.fillText('Hello World', x, y);
+    x = mouseX;
+    y = mouseY;
+
+    // ctx.drawImage(thingy.getFrame(), x, y);
+    thingy.draw(ctx, x, y);
 
     ctx.font = '50px Arial';
     ctx.fillText(currentWord, 100, 100);
     ctx.fillStyle = 'red';
     ctx.fillText(currentPrefix, 100, 100);
 
-    if (x < mouseX) {
-        x += 5;
-    } else {
-        x -= 5;
-    }
-    if (y < mouseY) {
-        y += 5;
-    } else {
-        y -= 5;
-    }
+    // if (x < mouseX) {
+    //     x += 5;
+    // } else {
+    //     x -= 5;
+    // }
+    // if (y < mouseY) {
+    //     y += 5;
+    // } else {
+    //     y -= 5;
+    // }
 
-    if (x < 50) {
-        x = 50;
-    }
-    if (x > w - 50) {
-        x = w - 50;
-    }
-    if (y < 50) {
-        y = 50;
-    }
-    if (y > h - 50) {
-        y = h - 50;
-    }
+    // if (x < 50) {
+    //     x = 50;
+    // } else if (x > w - 50) {
+    //     x = w - 50;
+    // }
+    // if (y < 50) {
+    //     y = 50;
+    // } else if (y > h - 50) {
+    //     y = h - 50;
+    // }
+
+    ctx.fillStyle = 'blue';
+    ctx.font = '30px Arial';
+    ctx.fillText(
+        `music frame: ${Audio.getTick()} - ${Audio.getPlaying()}`,
+        200,
+        (y = 200)
+    );
+
+    // console.log(`percent to next 4th note: ${Audio.next4th()}`);
 
     window.requestAnimationFrame(draw);
 };
