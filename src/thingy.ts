@@ -29,13 +29,13 @@ export default class Thingy {
     };
 
     draw = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-        ctx.fillStyle = `rgba(0,0,0,0.5)`;
-        ctx.fillRect(
-            x - this.width / 2,
-            y - this.height / 2,
-            this.width,
-            this.height
-        );
+        // ctx.fillStyle = `rgba(0,0,0,0.5)`;
+        // ctx.fillRect(
+        //     x - this.width / 2,
+        //     y - this.height / 2,
+        //     this.width,
+        //     this.height
+        // );
 
         ctx.drawImage(this.getFrame(), x - this.width / 2, y - this.height / 2);
     };

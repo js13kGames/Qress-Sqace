@@ -106,7 +106,7 @@ let mainGainNode: GainNode;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (90 * 4); // 180
+const secondsPerBeat = 60.0 / (80 * 4); // 180
 let nextNoteTime = 0.0;
 
 // @ts-ignore
@@ -157,44 +157,65 @@ function playTone(time: number, tone: number) {
 // [     3,  'C',    3,      2,       '_', 'bass', 'red'
 
 const sheet: {
-    tone: number;
+    octave: number;
+    tone: string;
     from: number;
     to: number;
     osc?: OscillatorNode;
 }[] = [
     // I made this "song" by hand in file editor :D
-    { tone: noteFreq[3]['A'], from: 0, to: 16 }, // bass
-    { tone: noteFreq[5]['C'], from: 0, to: 1 },
-    { tone: noteFreq[4]['B'], from: 2, to: 3 },
-    { tone: noteFreq[5]['C'], from: 4, to: 5 },
-    { tone: noteFreq[4]['A'], from: 6, to: 10 },
+    // { tone: noteFreq[3]['A'], from: 0, to: 16 }, // bass
+    // { tone: noteFreq[5]['C'], from: 0, to: 1 },
+    // { tone: noteFreq[4]['B'], from: 2, to: 3 },
+    // { tone: noteFreq[5]['C'], from: 4, to: 5 },
+    // { tone: noteFreq[4]['A'], from: 6, to: 10 },
 
-    { tone: noteFreq[3]['G'], from: 16, to: 32 }, // bass
-    { tone: noteFreq[5]['C'], from: 16, to: 17 },
-    { tone: noteFreq[4]['B'], from: 18, to: 19 },
-    { tone: noteFreq[5]['C'], from: 20, to: 21 },
-    { tone: noteFreq[4]['G'], from: 22, to: 26 },
+    // { tone: noteFreq[3]['G'], from: 16, to: 32 }, // bass
+    // { tone: noteFreq[5]['C'], from: 16, to: 17 },
+    // { tone: noteFreq[4]['B'], from: 18, to: 19 },
+    // { tone: noteFreq[5]['C'], from: 20, to: 21 },
+    // { tone: noteFreq[4]['G'], from: 22, to: 26 },
 
-    { tone: noteFreq[3]['D'], from: 32, to: 48 }, // bass
-    { tone: noteFreq[5]['C'], from: 32, to: 33 },
-    { tone: noteFreq[4]['B'], from: 34, to: 35 },
-    { tone: noteFreq[5]['C'], from: 36, to: 37 },
-    { tone: noteFreq[5]['D'], from: 38, to: 42 },
+    // { tone: noteFreq[3]['D'], from: 32, to: 48 }, // bass
+    // { tone: noteFreq[5]['C'], from: 32, to: 33 },
+    // { tone: noteFreq[4]['B'], from: 34, to: 35 },
+    // { tone: noteFreq[5]['C'], from: 36, to: 37 },
+    // { tone: noteFreq[5]['D'], from: 38, to: 42 },
 
-    { tone: noteFreq[3]['G'], from: 48, to: 64 }, // bass
-    { tone: noteFreq[5]['E'], from: 48, to: 51 },
-    { tone: noteFreq[5]['E'], from: 52, to: 53 },
-    { tone: noteFreq[5]['D'], from: 54, to: 57 },
-    { tone: noteFreq[5]['C'], from: 58, to: 60 },
-    { tone: noteFreq[4]['A'], from: 60, to: 62 },
+    // { tone: noteFreq[3]['G'], from: 48, to: 0 /*64*/ }, // bass
+    // { tone: noteFreq[5]['E'], from: 48, to: 51 },
+    // { tone: noteFreq[5]['E'], from: 52, to: 53 },
+    // { tone: noteFreq[5]['D'], from: 54, to: 57 },
+    // { tone: noteFreq[5]['C'], from: 58, to: 60 },
+    // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
-    { tone: noteFreq[5]['E'], from: 64, to: 65 },
-    { tone: noteFreq[5]['E'], from: 66, to: 67 },
-    { tone: noteFreq[5]['D'], from: 68, to: 69 },
-    { tone: noteFreq[5]['C'], from: 70, to: 71 },
-    { tone: noteFreq[4]['A'], from: 72, to: 73 },
-    { tone: noteFreq[4]['A'], from: 74, to: 75 },
-    { tone: noteFreq[4]['A'], from: 76, to: 80 },
+
+    { octave: 3, tone: 'A', from: 0, to: 16 }, // bass
+    { octave: 5, tone: 'C', from: 0, to: 1 },
+    { octave: 4, tone: 'B', from: 2, to: 3 },
+    { octave: 5, tone: 'C', from: 4, to: 5 },
+    { octave: 4, tone: 'A', from: 6, to: 10 },
+
+    { octave: 3, tone: 'G', from: 16, to: 32 }, // bass
+    { octave: 5, tone: 'C', from: 16, to: 17 },
+    { octave: 4, tone: 'B', from: 18, to: 19 },
+    { octave: 5, tone: 'C', from: 20, to: 21 },
+    { octave: 4, tone: 'G', from: 22, to: 26 },
+
+    { octave: 3, tone: 'D', from: 32, to: 48 }, // bass
+    { octave: 5, tone: 'C', from: 32, to: 33 },
+    { octave: 4, tone: 'B', from: 34, to: 35 },
+    { octave: 5, tone: 'C', from: 36, to: 37 },
+    { octave: 5, tone: 'D', from: 38, to: 42 },
+
+    { octave: 3, tone: 'G', from: 48, to: 0 }, // bass
+    { octave: 5, tone: 'E', from: 48, to: 51 },
+    { octave: 5, tone: 'E', from: 52, to: 53 },
+    { octave: 5, tone: 'D', from: 54, to: 57 },
+    { octave: 5, tone: 'C', from: 58, to: 60 },
+    { octave: 4, tone: 'A', from: 60, to: 62 },
+
+
 ];
 
 let tickCnt = 0;
@@ -205,7 +226,7 @@ const tick = (nextNoteTime: number) => {
 
     sheet.forEach((sheet) => {
         if (tickCnt === sheet.from) {
-            sheet.osc = playTone(nextNoteTime, sheet.tone);
+            sheet.osc = playTone(nextNoteTime, noteFreq[sheet.octave][sheet.tone]);
         }
 
         if (tickCnt === sheet.to) {
@@ -217,7 +238,7 @@ const tick = (nextNoteTime: number) => {
     });
 
     tickCnt++;
-    if (tickCnt % 128 === 0) {
+    if (tickCnt % 64 /*128*/ === 0) {
         tickCnt = 0;
     }
 };
@@ -231,9 +252,9 @@ const scheduler = () => {
         nextNoteTime += secondsPerBeat;
 
         if (tickCnt % 4 === 0) {
-            console.log(
-                `nextNoteTime=${nextNoteTime}, currentTime=${_audC.currentTime}`
-            );
+            // console.log(
+            //     `nextNoteTime=${nextNoteTime}, currentTime=${_audC.currentTime}`
+            // );
             last4th = next4th;
             next4th = nextNoteTime;
         }

@@ -110,10 +110,10 @@ const thingy = new Thingy(50, 400, 400, (i, ctx) => {
 
     for (var j = 0; j <= Math.PI * 2; j += Math.PI / 4) {
         ctx.fillStyle =
-            'rgba(' + (255 - i * 2) + ', ' + (100 - i) + ', 255, 0.8)';
+            'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.8)';
         ctx.fillRect(
-            200 + Math.cos(j) * i * 3,
-            200 + Math.sin(j) * i * 3,
+            200 + Math.cos(j) * i * 3 + 30 - 15 * Math.random(),
+            200 + Math.sin(j) * i * 3 + 30 - 15 * Math.random(),
             4 - i / 10,
             4 - i / 10
         );
@@ -130,12 +130,38 @@ const draw = () => {
     ctx.fillStyle = `rgb(255, ${i}, 104)`;
     ctx.fillRect(0, 0, w, h);
 
-    ctx.fillStyle = `rgb(255, 0, 0)`;
-    ctx.fillRect(50, 50, 500, 500);
+    const offset = 0;
+    ctx.fillStyle = `rgb(0, 0, 0)`;
+    ctx.fillRect(offset, offset, 500, 1000);
+
+    ctx.fillStyle = `white`;
+    ctx.fillRect(offset, offset + 250 + 490, 500, 20);
 
     const p = Audio.getNext4th();
+
+    // 0
+    // 125
+    // 625
+    // 750
+
+    // p=0   => 1=125, 2=625
+    // p=0.5 => 1=125+250=375, 2=375+500=875%500=125
+    // p=1   => 1=125+250+500=875, 2=125+500=625
+
+    console.log(`p=${p}`);
+
     ctx.fillStyle = `rgb(0, 255, 0)`;
-    ctx.fillRect(50, 50 + p * 500, 500, 10);
+    ctx.fillRect(offset, offset + (250 + p * 500), 500, 10);
+
+    ctx.fillRect(offset, offset + -250 + p * 500, 500, 10);
+    if (p <= 0.5) {
+        ctx.fillRect(offset, offset + 500 + ((p * 500 + 250) % 500), 500, 10);
+    }
+
+    // if (p >= 0.6) {
+    //     console.log(`p=${p}`);
+    //     thingy.draw(ctx, 250, 750);
+    // }
 
     x = mouseX;
     y = mouseY;
@@ -170,13 +196,13 @@ const draw = () => {
     //     y = h - 50;
     // }
 
-    ctx.fillStyle = 'blue';
-    ctx.font = '30px Arial';
-    ctx.fillText(
-        `music frame: ${Audio.getTick()} - ${Audio.getPlaying()}`,
-        200,
-        (y = 200)
-    );
+    // ctx.fillStyle = 'blue';
+    // ctx.font = '30px Arial';
+    // ctx.fillText(
+    //     `music frame: ${Audio.getTick()} - ${Audio.getPlaying()}`,
+    //     200,
+    //     (y = 200)
+    // );
 
     // console.log(`percent to next 4th note: ${Audio.next4th()}`);
 
