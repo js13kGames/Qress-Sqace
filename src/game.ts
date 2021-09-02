@@ -158,6 +158,8 @@ const draw = () => {
         ctx.fillRect(offset, offset + 500 + ((p * 500 + 250) % 500), 500, 10);
     }
 
+    // tady musim zjistit, odkud kam to ukazuju, jaky ticky
+
     x = mouseX;
     y = mouseY;
 
@@ -182,7 +184,11 @@ const draw = () => {
     const tick = Audio.getTick();
     ctx.fillStyle = 'blue';
     ctx.font = '30px Arial';
-    ctx.fillText(`music frame: ${tick}`, 200, 200);
+    ctx.fillText(
+        `music frame: ${tick}, next4th: ${tick - (tick % 4)}`,
+        200,
+        200
+    );
 
     [
         'rgba(255,255,0,0.4)',
@@ -197,10 +203,18 @@ const draw = () => {
     Audio.getObjectsInRange().forEach((o) => {
         ctx.fillStyle = 'white';
         ctx.font = '30px Arial';
+
+        const next4 = tick - (tick % 4);
+        const toNext4th = next4 - o.from;
+
+        if (Math.abs(next4 - o.from) > 2) {
+            return;
+        }
+
         ctx.fillText(
-            `${o.octave}${o.tone}`,
-            100 + o.from * 10,
-            100 + o.from * 10
+            `${o.octave}${o.tone}-${o.from}/${Audio.getTick()}`,
+            62 + (o.slot - 1) * 125,
+            750 + toNext4th * p * 100
         );
     });
 
