@@ -158,11 +158,6 @@ const draw = () => {
         ctx.fillRect(offset, offset + 500 + ((p * 500 + 250) % 500), 500, 10);
     }
 
-    // if (p >= 0.6) {
-    //     console.log(`p=${p}`);
-    //     thingy.draw(ctx, 250, 750);
-    // }
-
     x = mouseX;
     y = mouseY;
 
@@ -174,28 +169,6 @@ const draw = () => {
     ctx.fillStyle = 'red';
     ctx.fillText(currentPrefix, 100, 100);
 
-    // if (x < mouseX) {
-    //     x += 5;
-    // } else {
-    //     x -= 5;
-    // }
-    // if (y < mouseY) {
-    //     y += 5;
-    // } else {
-    //     y -= 5;
-    // }
-
-    // if (x < 50) {
-    //     x = 50;
-    // } else if (x > w - 50) {
-    //     x = w - 50;
-    // }
-    // if (y < 50) {
-    //     y = 50;
-    // } else if (y > h - 50) {
-    //     y = h - 50;
-    // }
-
     // ctx.fillStyle = 'blue';
     // ctx.font = '30px Arial';
     // ctx.fillText(
@@ -205,6 +178,31 @@ const draw = () => {
     // );
 
     // console.log(`percent to next 4th note: ${Audio.next4th()}`);
+
+    const tick = Audio.getTick();
+    ctx.fillStyle = 'blue';
+    ctx.font = '30px Arial';
+    ctx.fillText(`music frame: ${tick}`, 200, 200);
+
+    [
+        'rgba(255,255,0,0.4)',
+        'rgba(255,0,0,0.4)',
+        'rgba(0,255,0,0.4)',
+        'rgba(0,255,255,0.4)',
+    ].forEach((color, i) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(i * 125, 0, 125, 1000);
+    });
+
+    Audio.getObjectsInRange().forEach((o) => {
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.fillText(
+            `${o.octave}${o.tone}`,
+            100 + o.from * 10,
+            100 + o.from * 10
+        );
+    });
 
     window.requestAnimationFrame(draw);
 };

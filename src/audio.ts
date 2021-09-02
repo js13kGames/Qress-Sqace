@@ -1,3 +1,12 @@
+let mainGainNode: GainNode;
+
+const MAX_TICK = 64;
+
+const lookahead = 25;
+const scheduleAheadTime = 0.5;
+const secondsPerBeat = 60.0 / (120 * 4); // 180
+let nextNoteTime = 0.0;
+
 // https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/API/Web_Audio_API/Simple_synth/_sample_.The_video_keyboard.html
 
 let noteFreq: { [index: string]: number }[] = [];
@@ -102,13 +111,6 @@ noteFreq[7]['B'] = 3951.066410048992894;
 
 noteFreq[8]['C'] = 4186.009044809578154;
 
-let mainGainNode: GainNode;
-
-const lookahead = 25;
-const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (80 * 4); // 180
-let nextNoteTime = 0.0;
-
 // @ts-ignore
 var _audC = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -189,7 +191,6 @@ const sheet: {
     // { tone: noteFreq[5]['C'], from: 58, to: 60 },
     // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
-
     { octave: 3, tone: 'A', from: 0, to: 16 }, // bass
     { octave: 5, tone: 'C', from: 0, to: 1 },
     { octave: 4, tone: 'B', from: 2, to: 3 },
@@ -214,8 +215,6 @@ const sheet: {
     { octave: 5, tone: 'D', from: 54, to: 57 },
     { octave: 5, tone: 'C', from: 58, to: 60 },
     { octave: 4, tone: 'A', from: 60, to: 62 },
-
-
 ];
 
 let tickCnt = 0;
@@ -226,7 +225,10 @@ const tick = (nextNoteTime: number) => {
 
     sheet.forEach((sheet) => {
         if (tickCnt === sheet.from) {
-            sheet.osc = playTone(nextNoteTime, noteFreq[sheet.octave][sheet.tone]);
+            sheet.osc = playTone(
+                nextNoteTime,
+                noteFreq[sheet.octave][sheet.tone]
+            );
         }
 
         if (tickCnt === sheet.to) {
@@ -238,7 +240,7 @@ const tick = (nextNoteTime: number) => {
     });
 
     tickCnt++;
-    if (tickCnt % 64 /*128*/ === 0) {
+    if (tickCnt % MAX_TICK /*128*/ === 0) {
         tickCnt = 0;
     }
 };
@@ -278,6 +280,14 @@ const startMusic = () => {
 };
 
 const getTick = () => tickCnt;
+
+const getObjectsInRange = () => {
+    return sheet.filter(
+        (n) =>
+            n.from <= (tickCnt + 10) % MAX_TICK &&
+            n.from >= (tickCnt - 10) % MAX_TICK
+    );
+};
 
 const getPrevNoteTime = () => nextNoteTime - secondsPerBeat;
 
@@ -323,4 +333,5 @@ export default {
     getNextNoteTime,
     getTime,
     getNext4th,
+    getObjectsInRange,
 };
