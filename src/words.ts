@@ -4,7 +4,7 @@
 // https://github.com/dwyl/english-words/blob/master/words_alpha.txt
 // cat ~/Desktop/words_alpha.txt | egrep -v "y|u|i|o|p|h|j|k|l|n|m" | grep -x '.\{12,13\}' | wc -l
 
-const wordsRaw = `abba
+const wordsRaw4 = `abba
 acer
 aces
 acre
@@ -199,4 +199,86 @@ west
 zest
 zeta`;
 
-export default wordsRaw.split('\n');
+// words len5
+// cat ~/bak_desktop/words_alpha.txt | egrep -v "y|u|i|o|p|h|j|k|l|n|m" | grep -x '.\{6\}'
+
+const wordsRaw5 = `added
+agave
+agree
+arabs
+avast
+award
+aware
+aztec
+beads
+beard
+bears
+beast
+brace
+brass
+brave
+bread
+breed
+cadge
+carat
+cedar
+cesar
+craft
+crags
+crate
+crave
+dress
+dwarf
+eager
+eater
+edgar
+edged
+erase
+erect
+evade
+exact
+extra
+facet
+faded
+feeze
+grace
+grass
+grave
+great
+grece
+greed
+greet
+qatar
+radar
+raged
+react
+scare
+scarf
+serve
+sever
+staff
+stage
+stare
+start
+state
+stats
+steer
+straw
+swear
+sweat
+sweet
+taste
+tears
+tease
+texas
+trace
+tract
+trade
+vegas
+verse
+waxed
+xebec
+zebra`;
+
+export const words4 = wordsRaw4.split('\n');
+export const words5 = wordsRaw5.split('\n');

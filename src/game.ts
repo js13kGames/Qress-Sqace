@@ -1,7 +1,8 @@
 import Audio from './audio';
 import Thingy from './thingy';
 import { getContext } from './lib';
-import words from './words';
+import { words4, words5 } from './words';
+import { SheetItem } from './types';
 
 let tutorial = ['_qress_sqace', 'great_'];
 let tutorialFinished = 0;
@@ -89,7 +90,7 @@ const keydown = (e: KeyboardEvent) => {
 
         if (!nextLetter) {
             if (tutorialFinished === tutorial.length - 1) {
-                currentWord = words[(words.length * Math.random()) | 0] + '_';
+                currentWord = words4[(words4.length * Math.random()) | 0] + '_';
             } else {
                 tutorialFinished++;
                 currentWord = tutorial[tutorialFinished];
@@ -125,6 +126,53 @@ let i = 0;
 let x = 100;
 let y = 100;
 
+const nextWord = (len: number) =>
+    len === 4
+        ? words4[(words4.length * Math.random()) | 0]
+        : words5[(words5.length * Math.random()) | 0];
+let lastWord: string;
+let lastWordColor = 'green';
+let lastWordLetter = 0;
+const getAudioLetter = (len: number) => {
+    if (lastWordLetter === 0) {
+        lastWord = nextWord(len);
+        console.log({ lastWord });
+
+        if (lastWordColor === 'green') {
+            lastWordColor = 'red';
+        } else {
+            lastWordColor = 'green';
+        }
+    }
+
+    const ret = lastWord[lastWordLetter++];
+    if (lastWordLetter === lastWord.length) {
+        lastWordLetter = 0;
+    }
+    return ret;
+};
+
+const drawNote = (o: SheetItem, toBeat: number) => {
+    ctx.fillStyle = `rgba(0,0,0,0.8)`;
+    const l = (o.to - o.from) * 15;
+    ctx.fillRect(40 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
+
+    if (!o.label) {
+        return;
+    }
+    ctx.font = '30px Arial';
+    if (!o.letter) {
+        o.letter = getAudioLetter(o.wordLen ?? 0);
+        o.letterColor = lastWordColor;
+    }
+    ctx.fillStyle = o.letterColor || 'black';
+    ctx.fillText(
+        `${o.letter.toUpperCase()}`, // {octave}${o.tone}- // toBeat=${toBeat}
+        62 + (o.slot - 1) * 125,
+        750 + -toBeat * 100
+    );
+};
+
 const draw = () => {
     i = (i + 1) % 255;
     ctx.fillStyle = `rgb(255, ${i}, 104)`;
@@ -148,7 +196,7 @@ const draw = () => {
     // p=0.5 => 1=125+250=375, 2=375+500=875%500=125
     // p=1   => 1=125+250+500=875, 2=125+500=625
 
-    console.log(`p=${p}`);
+    // console.log(`p=${p}`);
 
     ctx.fillStyle = `rgb(0, 255, 0)`;
     ctx.fillRect(offset, offset + (250 + p * 500), 500, 10);
@@ -202,59 +250,17 @@ const draw = () => {
 
     const audioTime = Audio.getTime();
     Audio.getObjectsInRange().forEach((o) => {
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
         const toBeat = shouldPlayAt - audioTime;
-        ctx.fillStyle = `rgba(0,0,0,0.8)`;
-        const l = (o.to - o.from) * 15;
-        ctx.fillRect(40 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
-        ctx.fillStyle = `white`;
-        ctx.fillText(
-            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
-            62 + (o.slot - 1) * 125,
-            750 + -toBeat * 100
-        );
+        drawNote(o, toBeat);
 
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
-        2;
         const shouldPlayAt2 = (o.from - 64) * Audio.secondsPerBeat;
         const toBeat2 = shouldPlayAt2 - audioTime;
-        ctx.fillStyle = `rgba(0,0,0,0.8)`;
-        const l2 = (o.to - o.from) * 15;
-        ctx.fillRect(
-            40 + (o.slot - 1) * 125,
-            750 + -toBeat2 * 100 - l2,
-            50,
-            l2
-        );
-        ctx.fillStyle = `white`;
-        ctx.fillText(
-            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
-            62 + (o.slot - 1) * 125,
-            750 + -toBeat2 * 100
-        );
+        drawNote(o, toBeat2);
 
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
-        2;
         const shouldPlayAt3 = (o.from + 64) * Audio.secondsPerBeat;
         const toBeat3 = shouldPlayAt3 - audioTime;
-        ctx.fillStyle = `rgba(0,0,0,0.8)`;
-        const l3 = (o.to - o.from) * 15;
-        ctx.fillRect(
-            40 + (o.slot - 1) * 125,
-            750 + -toBeat3 * 100 - l3,
-            50,
-            l3
-        );
-        ctx.fillStyle = `white`;
-        ctx.fillText(
-            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
-            62 + (o.slot - 1) * 125,
-            750 + -toBeat3 * 100
-        );
+        drawNote(o, toBeat3);
     });
 
     window.requestAnimationFrame(draw);
