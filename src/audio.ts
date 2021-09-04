@@ -4,7 +4,10 @@ const MAX_TICK = 64;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (60 * 4); // 180
+const secondsPerBeat = 60.0 / (140 * 4); // 180
+
+const mod = secondsPerBeat * MAX_TICK;
+
 let nextNoteTime = 0.0;
 
 // https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/API/Web_Audio_API/Simple_synth/_sample_.The_video_keyboard.html
@@ -164,6 +167,7 @@ const sheet: {
     from: number;
     to: number;
     slot: number;
+    label?: string;
     osc?: OscillatorNode;
 }[] = [
     // I made this "song" by hand in file editor :D
@@ -192,17 +196,17 @@ const sheet: {
     // { tone: noteFreq[5]['C'], from: 58, to: 60 },
     // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
-    { octave: 3, tone: 'A', from: 0, to: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 0, to: 1, slot: 1 },
-    { octave: 4, tone: 'B', from: 2, to: 3, slot: 2 },
-    { octave: 5, tone: 'C', from: 4, to: 5, slot: 3 },
-    { octave: 4, tone: 'A', from: 6, to: 10, slot: 4 },
+    { octave: 3, tone: 'A', from: 0, to: 16, slot: 0, label: 'A' }, // bass
+    { octave: 5, tone: 'C', from: 0, to: 1, slot: 1, label: 'B' },
+    { octave: 4, tone: 'B', from: 2, to: 3, slot: 2, label: 'C' },
+    { octave: 5, tone: 'C', from: 4, to: 5, slot: 3, label: 'D' },
+    { octave: 4, tone: 'A', from: 6, to: 10, slot: 4, label: 'E' },
 
-    { octave: 3, tone: 'G', from: 16, to: 32, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 16, to: 17, slot: 1 },
-    { octave: 4, tone: 'B', from: 18, to: 19, slot: 2 },
-    { octave: 5, tone: 'C', from: 20, to: 21, slot: 3 },
-    { octave: 4, tone: 'G', from: 22, to: 26, slot: 4 },
+    { octave: 3, tone: 'G', from: 16, to: 32, slot: 0, label: 'F' }, // bass
+    { octave: 5, tone: 'C', from: 16, to: 17, slot: 1, label: 'G' },
+    { octave: 4, tone: 'B', from: 18, to: 19, slot: 2, label: 'H' },
+    { octave: 5, tone: 'C', from: 20, to: 21, slot: 3, label: 'I' },
+    { octave: 4, tone: 'G', from: 22, to: 26, slot: 4, label: 'J' },
 
     { octave: 3, tone: 'D', from: 32, to: 48, slot: 0 }, // bass
     { octave: 5, tone: 'C', from: 32, to: 33, slot: 1 },
@@ -295,7 +299,7 @@ const getPrevNoteTime = () => nextNoteTime - secondsPerBeat;
 
 const getNextNoteTime = () => nextNoteTime;
 
-const getTime = () => _audC.currentTime;
+const getTime = () => _audC.currentTime % mod;
 
 const getPlaying = () => {
     let r = '>';
@@ -320,7 +324,15 @@ const getNext4th = () => {
     // const p = d2 / d;
 
     const t = _audC.currentTime;
+
+    if (t === 0) {
+        return 0;
+    }
+
     const p = 1 - (next4th - t) / (next4th - last4th);
+    // if (_audC.currentTime > 0) {
+    //     debugger;
+    // }
     // console.log(`last=${last4th}, next=${next4th}, time=${t}, p=${p}`);
 
     return p;

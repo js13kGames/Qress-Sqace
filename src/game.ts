@@ -185,7 +185,7 @@ const draw = () => {
     ctx.fillStyle = 'blue';
     ctx.font = '30px Arial';
     ctx.fillText(
-        `music frame: ${tick}, next4th: ${tick - (tick % 4)}`,
+        `music frame: ${tick}, next4th: ${tick - (tick % 4)}, p=${p}`,
         200,
         200
     );
@@ -200,21 +200,31 @@ const draw = () => {
         ctx.fillRect(i * 125, 0, 125, 1000);
     });
 
+    const audioTime = Audio.getTime();
     Audio.getObjectsInRange().forEach((o) => {
         ctx.fillStyle = 'white';
         ctx.font = '30px Arial';
 
-        const next4 = tick - (tick % 4);
-        const toNext4th = next4 - o.from;
+        // const next4 = tick - (tick % 4) + 4;
+        // const toNext4th = next4 - o.from;
 
-        if (Math.abs(next4 - o.from) > 2) {
-            return;
-        }
+        // if (Math.abs(next4 - o.from) > 2) {
+        //     return;
+        // }
+        // if (o.from > 6) {
+        //     return;
+        // }
+        const shouldPlayAt = o.from * Audio.secondsPerBeat;
+        const toBeat = shouldPlayAt - audioTime;
 
+        ctx.fillStyle = `rgba(0,0,0,0.8)`;
+        const l = (o.to - o.from) * 15;
+        ctx.fillRect(50 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
+        ctx.fillStyle = `white`;
         ctx.fillText(
-            `${o.octave}${o.tone}-${o.from}/${Audio.getTick()}`,
+            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
             62 + (o.slot - 1) * 125,
-            750 + toNext4th * p * 100
+            750 + -toBeat * 100
         );
     });
 
