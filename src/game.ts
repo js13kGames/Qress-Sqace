@@ -204,27 +204,56 @@ const draw = () => {
     Audio.getObjectsInRange().forEach((o) => {
         ctx.fillStyle = 'white';
         ctx.font = '30px Arial';
-
-        // const next4 = tick - (tick % 4) + 4;
-        // const toNext4th = next4 - o.from;
-
-        // if (Math.abs(next4 - o.from) > 2) {
-        //     return;
-        // }
-        // if (o.from > 6) {
-        //     return;
-        // }
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
         const toBeat = shouldPlayAt - audioTime;
-
         ctx.fillStyle = `rgba(0,0,0,0.8)`;
         const l = (o.to - o.from) * 15;
-        ctx.fillRect(50 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
+        ctx.fillRect(40 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
         ctx.fillStyle = `white`;
         ctx.fillText(
             `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
             62 + (o.slot - 1) * 125,
             750 + -toBeat * 100
+        );
+
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        2;
+        const shouldPlayAt2 = (o.from - 64) * Audio.secondsPerBeat;
+        const toBeat2 = shouldPlayAt2 - audioTime;
+        ctx.fillStyle = `rgba(0,0,0,0.8)`;
+        const l2 = (o.to - o.from) * 15;
+        ctx.fillRect(
+            40 + (o.slot - 1) * 125,
+            750 + -toBeat2 * 100 - l2,
+            50,
+            l2
+        );
+        ctx.fillStyle = `white`;
+        ctx.fillText(
+            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
+            62 + (o.slot - 1) * 125,
+            750 + -toBeat2 * 100
+        );
+
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        2;
+        const shouldPlayAt3 = (o.from + 64) * Audio.secondsPerBeat;
+        const toBeat3 = shouldPlayAt3 - audioTime;
+        ctx.fillStyle = `rgba(0,0,0,0.8)`;
+        const l3 = (o.to - o.from) * 15;
+        ctx.fillRect(
+            40 + (o.slot - 1) * 125,
+            750 + -toBeat3 * 100 - l3,
+            50,
+            l3
+        );
+        ctx.fillStyle = `white`;
+        ctx.fillText(
+            `${o.label ? o.label : '_'}`, // {octave}${o.tone}- // toBeat=${toBeat}
+            62 + (o.slot - 1) * 125,
+            750 + -toBeat3 * 100
         );
     });
 
