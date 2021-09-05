@@ -119,14 +119,8 @@ const thingy = new Thingy(50, 400, 400, (i, ctx) => {
     // ctx.fillRect(0, 0, 200, 200);
 
     for (var j = 0; j <= Math.PI * 2; j += Math.PI / 4) {
-        ctx.fillStyle =
-            'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.8)';
-        ctx.fillRect(
-            200 + Math.cos(j) * i * 3 + 30 - 15 * Math.random(),
-            200 + Math.sin(j) * i * 3 + 30 - 15 * Math.random(),
-            4 - i / 10,
-            4 - i / 10
-        );
+        ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.8)';
+        ctx.fillRect(200 + Math.cos(j) * i * 3 + 30 - 15 * Math.random(), 200 + Math.sin(j) * i * 3 + 30 - 15 * Math.random(), 4 - i / 10, 4 - i / 10);
     }
 });
 
@@ -135,10 +129,7 @@ let i = 0;
 let x = 100;
 let y = 100;
 
-const nextWord = (len: number) =>
-    len === 4
-        ? words4[(words4.length * Math.random()) | 0]
-        : words5[(words5.length * Math.random()) | 0];
+const nextWord = (len: number) => (len === 4 ? words4[(words4.length * Math.random()) | 0] : words5[(words5.length * Math.random()) | 0]);
 let lastWord: string;
 let lastWordColor = 'green';
 let lastWordLetter = 0;
@@ -163,13 +154,13 @@ const getAudioLetter = (len: number) => {
 
 const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
     ctx.fillStyle = o.hit ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)';
+
+    if (!o.to) {
+        o.to = (o.from + o.length) % Audio.MAX_TICK;
+    }
+
     const l = (o.to - o.from) * 15;
-    ctx.fillRect(
-        40 + (o.slot - 1) * 125,
-        0.25 + 750 + -toBeat * 100 - l,
-        50,
-        l
-    );
+    ctx.fillRect(40 + (o.slot - 1) * 125, 0.25 + 750 + -toBeat * 100 - l, 50, l);
 
     ctx.beginPath();
     ctx.arc(65 + (o.slot - 1) * 125, 750 + -toBeat * 100, 25, 0, Math.PI);
@@ -183,15 +174,8 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
         o.letterLevel = 0;
     }
 
-    if (
-        !o.letter ||
-        (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod())
-    ) {
-        console.log(
-            `NEW o.letterLevel=${o.letterLevel}  - ${
-                o.letterLevel + o.from * Audio.secondsPerBeat
-            } < ${Audio.getTimeNotMod()}`
-        );
+    if (!o.letter || (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod())) {
+        console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
 
         o.letter = getAudioLetter(o.wordLen ?? 0);
         o.letterColor = lastWordColor;
@@ -204,8 +188,8 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
     ctx.fillStyle = o.hit ? 'yellow' : o.letterColor || 'purple';
     ctx.fillText(
         `${o.letter.toUpperCase()}`, // {octave}${o.tone}- // toBeat=${toBeat}
-        50 + (o.slot - 1) * 125 + 2.5,
-        750 + -toBeat * 100 + 10 /* 15 to put the letter to the middle */
+        50 + (o.slot - 1) * 125 + 5,
+        750 + -toBeat * 100 + 20 /* to put the letter to the middle */
     );
 };
 
@@ -256,12 +240,7 @@ const draw = () => {
     //     430
     // );
 
-    [
-        'rgba(255,255,0,0.4)',
-        'rgba(255,0,0,0.4)',
-        'rgba(0,255,0,0.4)',
-        'rgba(0,255,255,0.4)',
-    ].forEach((color, i) => {
+    ['rgba(255,255,0,0.4)', 'rgba(255,0,0,0.4)', 'rgba(0,255,0,0.4)', 'rgba(0,255,255,0.4)'].forEach((color, i) => {
         ctx.fillStyle = color;
         ctx.fillRect(i * 125, 0, 125, 1000);
     });
@@ -270,15 +249,9 @@ const draw = () => {
     const auditTimeNotMod = Audio.getTimeNotMod();
     Audio.getObjectsInRange().forEach((o) => {
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
-        const noteLevel = Math.floor(
-            (auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat
-        );
+        const noteLevel = Math.floor((auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat);
 
-        if (
-            o.letter === lastKey &&
-            lastKeyTime - 0.5 < shouldPlayAt &&
-            shouldPlayAt < lastKeyTime + 0.5
-        ) {
+        if (o.letter === lastKey && lastKeyTime - 0.5 < shouldPlayAt && shouldPlayAt < lastKeyTime + 0.5) {
             // debugger;
             o.hit = true;
         }
@@ -286,14 +259,14 @@ const draw = () => {
         const toBeat = shouldPlayAt - audioTime;
         drawNote(o, toBeat, noteLevel);
 
-        const shouldPlayAt2 = (o.from - 64) * Audio.secondsPerBeat;
+        const shouldPlayAt2 = (o.from - Audio.MAX_TICK) * Audio.secondsPerBeat;
         // const noteLevel2 = Math.floor(
         //     (auditTimeNotMod + shouldPlayAt2) / Audio.secondsPerBeat
         // );
         const toBeat2 = shouldPlayAt2 - audioTime;
         drawNote(o, toBeat2);
 
-        const shouldPlayAt3 = (o.from + 64) * Audio.secondsPerBeat;
+        const shouldPlayAt3 = (o.from + Audio.MAX_TICK) * Audio.secondsPerBeat;
         const toBeat3 = shouldPlayAt3 - audioTime;
         drawNote(o, toBeat3);
     });

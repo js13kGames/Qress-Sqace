@@ -2,7 +2,7 @@ import { SheetItem } from './types';
 
 let mainGainNode: GainNode;
 
-const MAX_TICK = 64;
+const MAX_TICK = 128;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
@@ -190,183 +190,57 @@ const sheet: SheetItem[] = [
     // { tone: noteFreq[5]['C'], from: 58, to: 60 },
     // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
-    { octave: 3, tone: 'A', from: 0, to: 16, length: 16, slot: 0 }, // bass
-    {
-        octave: 5,
-        tone: 'C',
-        from: 0,
-        to: 1,
-        length: 1,
-        slot: 1,
-        label: 'B',
-        wordLen: 4,
-    },
-    {
-        octave: 4,
-        tone: 'B',
-        from: 2,
-        to: 3,
-        length: 1,
-        slot: 2,
-        label: 'C',
-        wordLen: 4,
-    },
-    {
-        octave: 5,
-        tone: 'C',
-        from: 4,
-        to: 5,
-        length: 1,
-        slot: 3,
-        label: 'D',
-        wordLen: 4,
-    },
-    {
-        octave: 4,
-        tone: 'A',
-        from: 6,
-        to: 10,
-        length: 4,
-        slot: 4,
-        label: 'E',
-        wordLen: 4,
-    },
+    { octave: 3, tone: 'A', from: 0, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 0, length: 1, slot: 1, label: 'B', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 2, length: 1, slot: 2, label: 'C', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 4, length: 1, slot: 3, label: 'D', wordLen: 4 },
+    { octave: 4, tone: 'A', from: 6, length: 4, slot: 4, label: 'E', wordLen: 4 },
 
-    { octave: 3, tone: 'G', from: 16, to: 32, length: 16, slot: 0 }, // bass
-    {
-        octave: 5,
-        tone: 'C',
-        from: 16,
-        to: 17,
-        length: 1,
-        slot: 1,
-        label: 'G',
-        wordLen: 4,
-    },
-    {
-        octave: 4,
-        tone: 'B',
-        from: 18,
-        to: 19,
-        length: 1,
-        slot: 2,
-        label: 'H',
-        wordLen: 4,
-    },
-    {
-        octave: 5,
-        tone: 'C',
-        from: 20,
-        to: 21,
-        length: 1,
-        slot: 3,
-        label: 'I',
-        wordLen: 4,
-    },
-    {
-        octave: 4,
-        tone: 'G',
-        from: 22,
-        to: 26,
-        length: 4,
-        slot: 4,
-        label: 'J',
-        wordLen: 4,
-    },
+    { octave: 3, tone: 'G', from: 16, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 16, length: 1, slot: 1, label: 'G', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 18, length: 1, slot: 2, label: 'H', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 20, length: 1, slot: 3, label: 'I', wordLen: 4 },
+    { octave: 4, tone: 'G', from: 22, length: 4, slot: 4, label: 'J', wordLen: 4 },
 
-    { octave: 3, tone: 'D', from: 32, to: 48, length: 16, slot: 0 }, // bass
-    {
-        octave: 5,
-        tone: 'C',
-        from: 32,
-        to: 33,
-        length: 1,
-        slot: 1,
-        label: 'B',
-        wordLen: 4,
-    },
-    {
-        octave: 4,
-        tone: 'B',
-        from: 34,
-        to: 35,
-        length: 1,
-        slot: 2,
-        label: 'B',
-        wordLen: 4,
-    },
-    {
-        octave: 5,
-        tone: 'C',
-        from: 36,
-        to: 37,
-        length: 1,
-        slot: 3,
-        label: 'B',
-        wordLen: 4,
-    },
-    {
-        octave: 5,
-        tone: 'D',
-        from: 38,
-        to: 42,
-        length: 4,
-        slot: 4,
-        label: 'B',
-        wordLen: 4,
-    },
+    { octave: 3, tone: 'D', from: 32, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 32, length: 1, slot: 1, label: 'B', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 34, length: 1, slot: 2, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 36, length: 1, slot: 3, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'D', from: 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
 
-    { octave: 3, tone: 'G', from: 48, to: 0, length: 16, slot: 0 }, // bass
-    {
-        octave: 5,
-        tone: 'E',
-        from: 48,
-        to: 51,
-        length: 2,
-        slot: 1,
-        label: 'B',
-        wordLen: 5,
-    },
-    {
-        octave: 5,
-        tone: 'E',
-        from: 52,
-        to: 53,
-        length: 1,
-        slot: 2,
-        label: 'B',
-        wordLen: 5,
-    },
-    {
-        octave: 5,
-        tone: 'D',
-        from: 54,
-        to: 57,
-        length: 3,
-        slot: 3,
-        label: 'B',
-        wordLen: 5,
-    },
-    {
-        octave: 5,
-        tone: 'C',
-        from: 58,
-        to: 60,
-        length: 2,
-        slot: 4,
-        label: 'B',
-        wordLen: 5,
-    },
-    {
-        octave: 4,
-        tone: 'A',
-        from: 60,
-        to: 62,
-        length: 2,
-        slot: 1,
-        label: 'B',
-        wordLen: 5,
-    },
+    { octave: 3, tone: 'G', from: 48, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'E', from: 48, length: 3, slot: 1, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'E', from: 52, length: 1, slot: 2, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'D', from: 54, length: 3, slot: 3, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'C', from: 58, length: 2, slot: 4, label: 'B', wordLen: 5 },
+    { octave: 4, tone: 'A', from: 60, length: 2, slot: 3, label: 'B', wordLen: 5 },
+
+    //
+
+    { octave: 3, tone: 'A', from: 64 + 0, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 64 + 0, length: 1, slot: 1, label: 'B', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 64 + 2, length: 1, slot: 2, label: 'C', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 4, length: 1, slot: 3, label: 'D', wordLen: 4 },
+    { octave: 4, tone: 'A', from: 64 + 6, length: 4, slot: 4, label: 'E', wordLen: 4 },
+
+    { octave: 3, tone: 'G', from: 64 + 16, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 64 + 16, length: 1, slot: 1, label: 'G', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 64 + 18, length: 1, slot: 2, label: 'H', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 20, length: 1, slot: 3, label: 'I', wordLen: 4 },
+    { octave: 4, tone: 'G', from: 64 + 22, length: 4, slot: 4, label: 'J', wordLen: 4 },
+
+    { octave: 3, tone: 'D', from: 64 + 32, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 64 + 32, length: 1, slot: 1, label: 'B', wordLen: 4 },
+    { octave: 4, tone: 'B', from: 64 + 34, length: 1, slot: 2, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 36, length: 1, slot: 3, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'D', from: 64 + 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
+
+    { octave: 3, tone: 'G', from: 64 + 48, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'E', from: 64 + 48, length: 3, slot: 1, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'C', from: 64 + 52, length: 1, slot: 2, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'D', from: 64 + 53, length: 1, slot: 3, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'A', from: 64 + 54, length: 1, slot: 4, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'B', from: 64 + 56, length: 4, slot: 3, label: 'B', wordLen: 5 },
 ];
 
 let tickCnt = 0;
@@ -377,10 +251,7 @@ const tick = (nextNoteTime: number) => {
 
     sheet.forEach((sheet) => {
         if (tickCnt === sheet.from) {
-            sheet.osc = playTone(
-                nextNoteTime,
-                noteFreq[sheet.octave][sheet.tone]
-            );
+            sheet.osc = playTone(nextNoteTime, noteFreq[sheet.octave][sheet.tone]);
         }
 
         if (tickCnt === sheet.to) {
@@ -392,7 +263,7 @@ const tick = (nextNoteTime: number) => {
     });
 
     tickCnt++;
-    if (tickCnt % MAX_TICK /*128*/ === 0) {
+    if (tickCnt % MAX_TICK === 0) {
         tickCnt = 0;
     }
 };
@@ -456,6 +327,11 @@ const getPlaying = () => {
     let r = '>';
     for (let i = 0; i < sheet.length; i++) {
         const sheetI = sheet[i];
+
+        if (!sheetI.to) {
+            sheetI.to = (sheetI.from + sheetI.length + 1) % MAX_TICK;
+        }
+
         if (sheetI.osc && tickCnt >= sheetI.from && sheetI.to <= tickCnt) {
             r += `[${sheetI.from},${sheetI.to}]`;
         }
@@ -503,4 +379,5 @@ export default {
     getObjectsInRange,
     next4th,
     mod,
+    MAX_TICK,
 };
