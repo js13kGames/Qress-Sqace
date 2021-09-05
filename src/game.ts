@@ -4,6 +4,9 @@ import { getContext } from './lib';
 import { words4, words5 } from './words';
 import { SheetItem } from './types';
 
+let lastKey = '';
+let lastKeyTime = 0;
+
 let tutorial = ['_qress_sqace', 'great_'];
 let tutorialFinished = 0;
 
@@ -73,13 +76,19 @@ const mousemove = (e: MouseEvent) => {
 };
 
 const keydown = (e: KeyboardEvent) => {
+    Audio.startMusic();
+
     console.log(`key=${e.key}, next=${nextLetter}`);
+
+    // I should get e.timeStamp but idk how to sync it with audio
+    // there is a good tolerance so it should not matter too much
+    // lastKeyTime = e.timeStamp % Audio.mod;
+    lastKeyTime = Audio.getTime();
+    lastKey = e.key;
 
     let key;
     if (e.key === ' ') {
         key = '_';
-
-        Audio.startMusic();
     } else {
         key = e.key;
     }
@@ -152,24 +161,51 @@ const getAudioLetter = (len: number) => {
     return ret;
 };
 
-const drawNote = (o: SheetItem, toBeat: number) => {
-    ctx.fillStyle = `rgba(0,0,0,0.8)`;
+const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
+    ctx.fillStyle = o.hit ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)';
     const l = (o.to - o.from) * 15;
-    ctx.fillRect(40 + (o.slot - 1) * 125, 750 + -toBeat * 100 - l, 50, l);
+    ctx.fillRect(
+        40 + (o.slot - 1) * 125,
+        0.25 + 750 + -toBeat * 100 - l,
+        50,
+        l
+    );
+
+    ctx.beginPath();
+    ctx.arc(65 + (o.slot - 1) * 125, 750 + -toBeat * 100, 25, 0, Math.PI);
+    ctx.fill();
 
     if (!o.label) {
         return;
     }
     ctx.font = '30px Arial';
-    if (!o.letter) {
+    if (!o.letterLevel) {
+        o.letterLevel = 0;
+    }
+
+    if (
+        !o.letter ||
+        (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod())
+    ) {
+        console.log(
+            `NEW o.letterLevel=${o.letterLevel}  - ${
+                o.letterLevel + o.from * Audio.secondsPerBeat
+            } < ${Audio.getTimeNotMod()}`
+        );
+
         o.letter = getAudioLetter(o.wordLen ?? 0);
         o.letterColor = lastWordColor;
+        o.letterLevel = Audio.getTimeNotMod();
+        console.log(o.letterLevel);
+        // debugger;
+        o.hit = false;
     }
-    ctx.fillStyle = o.letterColor || 'black';
+
+    ctx.fillStyle = o.hit ? 'yellow' : o.letterColor || 'purple';
     ctx.fillText(
         `${o.letter.toUpperCase()}`, // {octave}${o.tone}- // toBeat=${toBeat}
-        62 + (o.slot - 1) * 125,
-        750 + -toBeat * 100
+        50 + (o.slot - 1) * 125 + 2.5,
+        750 + -toBeat * 100 + 10 /* 15 to put the letter to the middle */
     );
 };
 
@@ -186,18 +222,6 @@ const draw = () => {
     ctx.fillRect(offset, offset + 250 + 490, 500, 20);
 
     const p = Audio.getNext4th();
-
-    // 0
-    // 125
-    // 625
-    // 750
-
-    // p=0   => 1=125, 2=625
-    // p=0.5 => 1=125+250=375, 2=375+500=875%500=125
-    // p=1   => 1=125+250+500=875, 2=125+500=625
-
-    // console.log(`p=${p}`);
-
     ctx.fillStyle = `rgb(0, 255, 0)`;
     ctx.fillRect(offset, offset + (250 + p * 500), 500, 10);
 
@@ -205,9 +229,6 @@ const draw = () => {
     if (p <= 0.5) {
         ctx.fillRect(offset, offset + 500 + ((p * 500 + 250) % 500), 500, 10);
     }
-
-    // tady musim zjistit, odkud kam to ukazuju, jaky ticky
-
     x = mouseX;
     y = mouseY;
 
@@ -219,24 +240,21 @@ const draw = () => {
     ctx.fillStyle = 'red';
     ctx.fillText(currentPrefix, 100, 100);
 
-    // ctx.fillStyle = 'blue';
-    // ctx.font = '30px Arial';
-    // ctx.fillText(
-    //     `music frame: ${Audio.getTick()} - ${Audio.getPlaying()}`,
-    //     200,
-    //     (y = 200)
-    // );
-
-    // console.log(`percent to next 4th note: ${Audio.next4th()}`);
-
-    const tick = Audio.getTick();
+    // const tick = Audio.getTick();
     ctx.fillStyle = 'blue';
     ctx.font = '30px Arial';
-    ctx.fillText(
-        `music frame: ${tick}, next4th: ${tick - (tick % 4)}, p=${p}`,
-        200,
-        200
-    );
+    // ctx.fillText(
+    //     `music frame: ${tick}, next4th: ${tick - (tick % 4)}, p=${p}`,
+    //     200,
+    //     200
+    // );
+    ctx.fillText(`Audio.getLevel()=${Audio.getLevel()}`, 400, 500);
+    // ctx.fillText(
+    //     `
+    //     audioTime=${Audio.getTime()}`,
+    //     400,
+    //     430
+    // );
 
     [
         'rgba(255,255,0,0.4)',
@@ -249,12 +267,29 @@ const draw = () => {
     });
 
     const audioTime = Audio.getTime();
+    const auditTimeNotMod = Audio.getTimeNotMod();
     Audio.getObjectsInRange().forEach((o) => {
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
+        const noteLevel = Math.floor(
+            (auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat
+        );
+
+        if (
+            o.letter === lastKey &&
+            lastKeyTime - 0.5 < shouldPlayAt &&
+            shouldPlayAt < lastKeyTime + 0.5
+        ) {
+            // debugger;
+            o.hit = true;
+        }
+
         const toBeat = shouldPlayAt - audioTime;
-        drawNote(o, toBeat);
+        drawNote(o, toBeat, noteLevel);
 
         const shouldPlayAt2 = (o.from - 64) * Audio.secondsPerBeat;
+        // const noteLevel2 = Math.floor(
+        //     (auditTimeNotMod + shouldPlayAt2) / Audio.secondsPerBeat
+        // );
         const toBeat2 = shouldPlayAt2 - audioTime;
         drawNote(o, toBeat2);
 
@@ -267,14 +302,12 @@ const draw = () => {
 };
 
 const main = () => {
-    console.log('hello :))');
-
     canvas = document.createElement('canvas');
     ctx = getContext(canvas);
     document.body.appendChild(canvas);
-
     resize();
-    draw();
+
+    window.requestAnimationFrame(draw);
     window.addEventListener('resize', resize);
     canvas.addEventListener('mousemove', mousemove);
     document.addEventListener('keydown', keydown);

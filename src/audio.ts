@@ -190,30 +190,183 @@ const sheet: SheetItem[] = [
     // { tone: noteFreq[5]['C'], from: 58, to: 60 },
     // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
-    { octave: 3, tone: 'A', from: 0, to: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 0, to: 1, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 2, to: 3, slot: 2, label: 'C', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 4, to: 5, slot: 3, label: 'D', wordLen: 4 },
-    { octave: 4, tone: 'A', from: 6, to: 10, slot: 4, label: 'E', wordLen: 4 },
+    { octave: 3, tone: 'A', from: 0, to: 16, length: 16, slot: 0 }, // bass
+    {
+        octave: 5,
+        tone: 'C',
+        from: 0,
+        to: 1,
+        length: 1,
+        slot: 1,
+        label: 'B',
+        wordLen: 4,
+    },
+    {
+        octave: 4,
+        tone: 'B',
+        from: 2,
+        to: 3,
+        length: 1,
+        slot: 2,
+        label: 'C',
+        wordLen: 4,
+    },
+    {
+        octave: 5,
+        tone: 'C',
+        from: 4,
+        to: 5,
+        length: 1,
+        slot: 3,
+        label: 'D',
+        wordLen: 4,
+    },
+    {
+        octave: 4,
+        tone: 'A',
+        from: 6,
+        to: 10,
+        length: 4,
+        slot: 4,
+        label: 'E',
+        wordLen: 4,
+    },
 
-    { octave: 3, tone: 'G', from: 16, to: 32, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 16, to: 17, slot: 1, label: 'G', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 18, to: 19, slot: 2, label: 'H', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 20, to: 21, slot: 3, label: 'I', wordLen: 4 },
-    { octave: 4, tone: 'G', from: 22, to: 26, slot: 4, label: 'J', wordLen: 4 },
+    { octave: 3, tone: 'G', from: 16, to: 32, length: 16, slot: 0 }, // bass
+    {
+        octave: 5,
+        tone: 'C',
+        from: 16,
+        to: 17,
+        length: 1,
+        slot: 1,
+        label: 'G',
+        wordLen: 4,
+    },
+    {
+        octave: 4,
+        tone: 'B',
+        from: 18,
+        to: 19,
+        length: 1,
+        slot: 2,
+        label: 'H',
+        wordLen: 4,
+    },
+    {
+        octave: 5,
+        tone: 'C',
+        from: 20,
+        to: 21,
+        length: 1,
+        slot: 3,
+        label: 'I',
+        wordLen: 4,
+    },
+    {
+        octave: 4,
+        tone: 'G',
+        from: 22,
+        to: 26,
+        length: 4,
+        slot: 4,
+        label: 'J',
+        wordLen: 4,
+    },
 
-    { octave: 3, tone: 'D', from: 32, to: 48, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 32, to: 33, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 34, to: 35, slot: 2, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 36, to: 37, slot: 3, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'D', from: 38, to: 42, slot: 4, label: 'B', wordLen: 4 },
+    { octave: 3, tone: 'D', from: 32, to: 48, length: 16, slot: 0 }, // bass
+    {
+        octave: 5,
+        tone: 'C',
+        from: 32,
+        to: 33,
+        length: 1,
+        slot: 1,
+        label: 'B',
+        wordLen: 4,
+    },
+    {
+        octave: 4,
+        tone: 'B',
+        from: 34,
+        to: 35,
+        length: 1,
+        slot: 2,
+        label: 'B',
+        wordLen: 4,
+    },
+    {
+        octave: 5,
+        tone: 'C',
+        from: 36,
+        to: 37,
+        length: 1,
+        slot: 3,
+        label: 'B',
+        wordLen: 4,
+    },
+    {
+        octave: 5,
+        tone: 'D',
+        from: 38,
+        to: 42,
+        length: 4,
+        slot: 4,
+        label: 'B',
+        wordLen: 4,
+    },
 
-    { octave: 3, tone: 'G', from: 48, to: 0, slot: 0 }, // bass
-    { octave: 5, tone: 'E', from: 48, to: 51, slot: 1, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'E', from: 52, to: 53, slot: 2, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'D', from: 54, to: 57, slot: 3, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'C', from: 58, to: 60, slot: 4, label: 'B', wordLen: 5 },
-    { octave: 4, tone: 'A', from: 60, to: 62, slot: 1, label: 'B', wordLen: 5 },
+    { octave: 3, tone: 'G', from: 48, to: 0, length: 16, slot: 0 }, // bass
+    {
+        octave: 5,
+        tone: 'E',
+        from: 48,
+        to: 51,
+        length: 2,
+        slot: 1,
+        label: 'B',
+        wordLen: 5,
+    },
+    {
+        octave: 5,
+        tone: 'E',
+        from: 52,
+        to: 53,
+        length: 1,
+        slot: 2,
+        label: 'B',
+        wordLen: 5,
+    },
+    {
+        octave: 5,
+        tone: 'D',
+        from: 54,
+        to: 57,
+        length: 3,
+        slot: 3,
+        label: 'B',
+        wordLen: 5,
+    },
+    {
+        octave: 5,
+        tone: 'C',
+        from: 58,
+        to: 60,
+        length: 2,
+        slot: 4,
+        label: 'B',
+        wordLen: 5,
+    },
+    {
+        octave: 4,
+        tone: 'A',
+        from: 60,
+        to: 62,
+        length: 2,
+        slot: 1,
+        label: 'B',
+        wordLen: 5,
+    },
 ];
 
 let tickCnt = 0;
@@ -293,7 +446,11 @@ const getPrevNoteTime = () => nextNoteTime - secondsPerBeat;
 
 const getNextNoteTime = () => nextNoteTime;
 
+const getTimeNotMod = () => _audC.currentTime;
 const getTime = () => _audC.currentTime % mod;
+
+// how many times the song has been played
+const getLevel = () => Math.floor(_audC.currentTime / mod);
 
 const getPlaying = () => {
     let r = '>';
@@ -339,8 +496,11 @@ export default {
     secondsPerBeat,
     getPrevNoteTime,
     getNextNoteTime,
+    getLevel,
     getTime,
+    getTimeNotMod,
     getNext4th,
     getObjectsInRange,
     next4th,
+    mod,
 };
