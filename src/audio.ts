@@ -6,7 +6,7 @@ const MAX_TICK = 128;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (140 * 4); // 180
+const secondsPerBeat = 60.0 / (190 * 4); // 120 je OK
 
 const mod = secondsPerBeat * MAX_TICK;
 
@@ -119,7 +119,7 @@ noteFreq[8]['C'] = 4186.009044809578154;
 // @ts-ignore
 var _audC = new (window.AudioContext || window.webkitAudioContext)();
 
-let noiseDuration = 0.2;
+let noiseDuration = 0.25;
 let bandHz = 1000;
 let noteCnt = 0;
 const playNoise = (time: number) => {
@@ -145,6 +145,38 @@ const playNoise = (time: number) => {
     const bandpass = _audC.createBiquadFilter();
     bandpass.type = 'bandpass';
     bandpass.frequency.value = bandHz;
+
+    // connect our graph
+    noise.connect(bandpass).connect(_audC.destination);
+    noise.start(time);
+};
+
+let noiseDuration2 = 0.05;
+let bandHz2;
+let noteCnt2 = 0;
+const playNoise2 = (time: number) => {
+    noteCnt2++;
+    bandHz2 = 1000 + noteCnt2 * 50 + Math.random() * 200;
+    if (noteCnt2 % 64 === 0) {
+        noteCnt2 = 0;
+    }
+
+    const bufferSize = _audC.sampleRate * noiseDuration2 + Math.random() * 0.1; // set the time of the note
+    const buffer = _audC.createBuffer(1, bufferSize, _audC.sampleRate); // create an empty buffer
+    const data = buffer.getChannelData(0); // get data
+
+    // fill the buffer with noise
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    // create a buffer source for our created data
+    const noise = _audC.createBufferSource();
+    noise.buffer = buffer;
+
+    const bandpass = _audC.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.value = bandHz2;
 
     // connect our graph
     noise.connect(bandpass).connect(_audC.destination);
@@ -230,13 +262,13 @@ const sheet: SheetItem[] = [
     { octave: 4, tone: 'G', from: 64 + 22, length: 4, slot: 4, label: 'J', wordLen: 4 },
 
     { octave: 3, tone: 'D', from: 64 + 32, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 64 + 32, length: 1, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 64 + 34, length: 1, slot: 2, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 64 + 36, length: 1, slot: 3, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'D', from: 64 + 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 32, length: 2, slot: 1, label: 'B', wordLen: 4 },
+    { octave: 4, tone: 'A', from: 64 + 34, length: 2, slot: 2, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'E', from: 64 + 36, length: 2, slot: 3, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'F', from: 64 + 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
 
     { octave: 3, tone: 'G', from: 64 + 48, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'E', from: 64 + 48, length: 3, slot: 1, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'E', from: 64 + 48, length: 4, slot: 1, label: 'B', wordLen: 5 },
     { octave: 5, tone: 'C', from: 64 + 52, length: 1, slot: 2, label: 'B', wordLen: 5 },
     { octave: 5, tone: 'D', from: 64 + 53, length: 1, slot: 3, label: 'B', wordLen: 5 },
     { octave: 5, tone: 'A', from: 64 + 54, length: 1, slot: 4, label: 'B', wordLen: 5 },
@@ -248,6 +280,10 @@ const tick = (nextNoteTime: number) => {
     if (tickCnt % 4 === 0) {
         playNoise(nextNoteTime);
     }
+
+    // if (tickCnt % 2 === 0) {
+    playNoise2(nextNoteTime);
+    // }
 
     sheet.forEach((sheet) => {
         if (tickCnt === sheet.from) {

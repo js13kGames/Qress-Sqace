@@ -160,10 +160,10 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
     }
 
     const l = (o.to - o.from) * 15;
-    ctx.fillRect(40 + (o.slot - 1) * 125, 0.25 + 750 + -toBeat * 100 - l, 50, l);
+    ctx.fillRect(40 + (o.slot - 1) * 125, 0.25 + 735 + -toBeat * 100 - l, 50, l);
 
     ctx.beginPath();
-    ctx.arc(65 + (o.slot - 1) * 125, 750 + -toBeat * 100, 25, 0, Math.PI);
+    ctx.arc(65 + (o.slot - 1) * 125, 735 + -toBeat * 100, 25, 0, Math.PI);
     ctx.fill();
 
     if (!o.label) {
@@ -174,7 +174,11 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
         o.letterLevel = 0;
     }
 
-    if (!o.letter || (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod())) {
+    if (
+        !o.letter ||
+        (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod()) //||
+        // (noteLevel && o.letterLevel + Audio.mod - 32 * Audio.secondsPerBeat <= Audio.getTimeNotMod())
+    ) {
         console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
 
         o.letter = getAudioLetter(o.wordLen ?? 0);
@@ -189,7 +193,7 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
     ctx.fillText(
         `${o.letter.toUpperCase()}`, // {octave}${o.tone}- // toBeat=${toBeat}
         50 + (o.slot - 1) * 125 + 5,
-        750 + -toBeat * 100 + 20 /* to put the letter to the middle */
+        735 + -toBeat * 100 + 20 /* to put the letter to the middle */
     );
 };
 
