@@ -13,4 +13,5 @@ export type SheetItem = {
 
     hit?: boolean; // was the note hit?
     letterLevel?: number; // on what level was the letter generated
+    group?: number;
 };

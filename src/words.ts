@@ -4,13 +4,9 @@
 // https://github.com/dwyl/english-words/blob/master/words_alpha.txt
 // cat ~/Desktop/words_alpha.txt | egrep -v "y|u|i|o|p|h|j|k|l|n|m" | grep -x '.\{12,13\}' | wc -l
 
-const wordsRaw4 = `abba
-acer
-aces
+const wordsRaw4 = `acer
 acre
 acta
-addr
-adds
 agar
 aged
 ages
@@ -35,11 +31,9 @@ bars
 bart
 base
 bass
-bats
 bead
 bear
 beat
-beds
 beef
 beer
 bees
@@ -48,21 +42,16 @@ begs
 bert
 best
 beta
-bets
-brad
 brag
 bras
 brat
 bred
 bret
 brew
-brrr
-cabs
 cafe
 cage
 card
 care
-cars
 cart
 casa
 case
@@ -91,7 +80,6 @@ debt
 deed
 deer
 defs
-deft
 desc
 dews
 drag
@@ -103,9 +91,7 @@ east
 eats
 eave
 edge
-eggs
 ever
-exec
 face
 fact
 fade
@@ -158,7 +144,6 @@ safe
 saga
 sage
 sara
-sass
 save
 scar
 scat
@@ -167,7 +152,6 @@ seas
 seat
 seed
 seer
-serb
 stab
 star
 stat
@@ -205,14 +189,12 @@ zeta`;
 const wordsRaw5 = `added
 agave
 agree
-arabs
 avast
 award
 aware
 aztec
 beads
 beard
-bears
 beast
 brace
 brass
@@ -245,7 +227,6 @@ grace
 grass
 grave
 great
-grece
 greed
 greet
 qatar

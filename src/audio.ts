@@ -6,7 +6,7 @@ const MAX_TICK = 128;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (190 * 4); // 120 je OK
+const secondsPerBeat = 60.0 / (120 * 4); // 120 je OK
 
 const mod = secondsPerBeat * MAX_TICK;
 
@@ -223,56 +223,56 @@ const sheet: SheetItem[] = [
     // { tone: noteFreq[4]['A'], from: 60, to: 62 },
 
     { octave: 3, tone: 'A', from: 0, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 0, length: 1, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 2, length: 1, slot: 2, label: 'C', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 4, length: 1, slot: 3, label: 'D', wordLen: 4 },
-    { octave: 4, tone: 'A', from: 6, length: 4, slot: 4, label: 'E', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 0, length: 1, slot: 1, label: 'B', wordLen: 4, group: 0 },
+    { octave: 4, tone: 'B', from: 2, length: 1, slot: 2, label: 'C', wordLen: 4, group: 0 },
+    { octave: 5, tone: 'C', from: 4, length: 1, slot: 3, label: 'D', wordLen: 4, group: 0 },
+    { octave: 4, tone: 'A', from: 6, length: 4, slot: 4, label: 'E', wordLen: 4, group: 0 },
 
     { octave: 3, tone: 'G', from: 16, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 16, length: 1, slot: 1, label: 'G', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 18, length: 1, slot: 2, label: 'H', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 20, length: 1, slot: 3, label: 'I', wordLen: 4 },
-    { octave: 4, tone: 'G', from: 22, length: 4, slot: 4, label: 'J', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 16, length: 1, slot: 1, label: 'G', wordLen: 4, group: 1 },
+    { octave: 4, tone: 'B', from: 18, length: 1, slot: 2, label: 'H', wordLen: 4, group: 1 },
+    { octave: 5, tone: 'C', from: 20, length: 1, slot: 3, label: 'I', wordLen: 4, group: 1 },
+    { octave: 4, tone: 'G', from: 22, length: 4, slot: 4, label: 'J', wordLen: 4, group: 1 },
 
     { octave: 3, tone: 'D', from: 32, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 32, length: 1, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 34, length: 1, slot: 2, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 36, length: 1, slot: 3, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'D', from: 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 32, length: 1, slot: 1, label: 'B', wordLen: 4, group: 2 },
+    { octave: 4, tone: 'B', from: 34, length: 1, slot: 2, label: 'B', wordLen: 4, group: 2 },
+    { octave: 5, tone: 'C', from: 36, length: 1, slot: 3, label: 'B', wordLen: 4, group: 2 },
+    { octave: 5, tone: 'D', from: 38, length: 4, slot: 4, label: 'B', wordLen: 4, group: 2 },
 
     { octave: 3, tone: 'G', from: 48, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'E', from: 48, length: 3, slot: 1, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'E', from: 52, length: 1, slot: 2, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'D', from: 54, length: 3, slot: 3, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'C', from: 58, length: 2, slot: 4, label: 'B', wordLen: 5 },
-    { octave: 4, tone: 'A', from: 60, length: 2, slot: 3, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'E', from: 48, length: 3, slot: 1, label: 'B', wordLen: 5, group: 3 },
+    { octave: 5, tone: 'E', from: 52, length: 1, slot: 2, label: 'B', wordLen: 5, group: 3 },
+    { octave: 5, tone: 'D', from: 54, length: 3, slot: 3, label: 'B', wordLen: 5, group: 3 },
+    { octave: 5, tone: 'C', from: 58, length: 2, slot: 4, label: 'B', wordLen: 5, group: 3 },
+    { octave: 4, tone: 'A', from: 60, length: 2, slot: 3, label: 'B', wordLen: 5, group: 3 },
 
     //
 
     { octave: 3, tone: 'A', from: 64 + 0, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 64 + 0, length: 1, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 64 + 2, length: 1, slot: 2, label: 'C', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 64 + 4, length: 1, slot: 3, label: 'D', wordLen: 4 },
-    { octave: 4, tone: 'A', from: 64 + 6, length: 4, slot: 4, label: 'E', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 0, length: 1, slot: 1, label: 'B', wordLen: 4, group: 4 },
+    { octave: 4, tone: 'B', from: 64 + 2, length: 1, slot: 2, label: 'C', wordLen: 4, group: 4 },
+    { octave: 5, tone: 'C', from: 64 + 4, length: 1, slot: 3, label: 'D', wordLen: 4, group: 4 },
+    { octave: 4, tone: 'A', from: 64 + 6, length: 4, slot: 4, label: 'E', wordLen: 4, group: 4 },
 
     { octave: 3, tone: 'G', from: 64 + 16, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 64 + 16, length: 1, slot: 1, label: 'G', wordLen: 4 },
-    { octave: 4, tone: 'B', from: 64 + 18, length: 1, slot: 2, label: 'H', wordLen: 4 },
-    { octave: 5, tone: 'C', from: 64 + 20, length: 1, slot: 3, label: 'I', wordLen: 4 },
-    { octave: 4, tone: 'G', from: 64 + 22, length: 4, slot: 4, label: 'J', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 16, length: 1, slot: 1, label: 'G', wordLen: 4, group: 5 },
+    { octave: 4, tone: 'B', from: 64 + 18, length: 1, slot: 2, label: 'H', wordLen: 4, group: 5 },
+    { octave: 5, tone: 'C', from: 64 + 20, length: 1, slot: 3, label: 'I', wordLen: 4, group: 5 },
+    { octave: 4, tone: 'G', from: 64 + 22, length: 4, slot: 4, label: 'J', wordLen: 4, group: 5 },
 
     { octave: 3, tone: 'D', from: 64 + 32, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'C', from: 64 + 32, length: 2, slot: 1, label: 'B', wordLen: 4 },
-    { octave: 4, tone: 'A', from: 64 + 34, length: 2, slot: 2, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'E', from: 64 + 36, length: 2, slot: 3, label: 'B', wordLen: 4 },
-    { octave: 5, tone: 'F', from: 64 + 38, length: 4, slot: 4, label: 'B', wordLen: 4 },
+    { octave: 5, tone: 'C', from: 64 + 32, length: 2, slot: 1, label: 'B', wordLen: 4, group: 6 },
+    { octave: 4, tone: 'A', from: 64 + 34, length: 2, slot: 2, label: 'B', wordLen: 4, group: 6 },
+    { octave: 5, tone: 'E', from: 64 + 36, length: 2, slot: 3, label: 'B', wordLen: 4, group: 6 },
+    { octave: 5, tone: 'F', from: 64 + 38, length: 4, slot: 4, label: 'B', wordLen: 4, group: 6 },
 
     { octave: 3, tone: 'G', from: 64 + 48, length: 16, slot: 0 }, // bass
-    { octave: 5, tone: 'E', from: 64 + 48, length: 4, slot: 1, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'C', from: 64 + 52, length: 1, slot: 2, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'D', from: 64 + 53, length: 1, slot: 3, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'A', from: 64 + 54, length: 1, slot: 4, label: 'B', wordLen: 5 },
-    { octave: 5, tone: 'B', from: 64 + 56, length: 4, slot: 3, label: 'B', wordLen: 5 },
+    { octave: 5, tone: 'E', from: 64 + 48, length: 4, slot: 1, label: 'B', wordLen: 5, group: 7 },
+    { octave: 5, tone: 'C', from: 64 + 52, length: 1, slot: 2, label: 'B', wordLen: 5, group: 7 },
+    { octave: 5, tone: 'D', from: 64 + 53, length: 1, slot: 3, label: 'B', wordLen: 5, group: 7 },
+    { octave: 5, tone: 'A', from: 64 + 54, length: 1, slot: 4, label: 'B', wordLen: 5, group: 7 },
+    { octave: 5, tone: 'B', from: 64 + 56, length: 4, slot: 3, label: 'B', wordLen: 5, group: 7 },
 ];
 
 let tickCnt = 0;
@@ -416,4 +416,5 @@ export default {
     next4th,
     mod,
     MAX_TICK,
+    sheet,
 };

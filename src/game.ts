@@ -113,16 +113,98 @@ const keydown = (e: KeyboardEvent) => {
 
 /***************/
 
-const thingy = new Thingy(50, 400, 400, (i, ctx) => {
+const thingy = new Thingy(50, 200, 200, (i, ctx) => {
     // console.log(`drawing i=${i}`);
     // ctx.fillStyle = `rgb(0, ${i * 25}, 0)`;
     // ctx.fillRect(0, 0, 200, 200);
 
+    // ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    // ctx.fillRect(0, 0, 200, 200);
+
     for (var j = 0; j <= Math.PI * 2; j += Math.PI / 4) {
         ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.8)';
-        ctx.fillRect(200 + Math.cos(j) * i * 3 + 30 - 15 * Math.random(), 200 + Math.sin(j) * i * 3 + 30 - 15 * Math.random(), 4 - i / 10, 4 - i / 10);
+        ctx.fillRect(80 + Math.cos(j) * i * 3 + 30 - 15 * Math.random(), 80 + Math.sin(j) * i * 3 + 30 - 15 * Math.random(), 4 - i / 10, 4 - i / 10);
     }
 });
+
+const spaceship = new Thingy(50, 200, 200, (i, ctx) => {
+    // console.log(`drawing i=${i}`);
+    // ctx.fillStyle = `rgb(0, ${i * 25}, 0)`;
+    // ctx.fillRect(0, 0, 200, 200);
+
+    // ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    // ctx.fillRect(0, 0, 200, 200);
+
+    ctx.fillStyle = 'black';
+    ctx.beginPath();
+    ctx.moveTo(100, 50);
+    ctx.lineTo(80, 100);
+    ctx.lineTo(120, 100);
+    ctx.closePath();
+    ctx.fill();
+
+    // for (let j = 0; j <= Math.PI; j += Math.PI / 32) {
+    //     ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.9)';
+    //     ctx.fillRect(Math.random() * -5 + 102.5 + Math.cos(j) * i, 100 + Math.sin(j) * i, 3, 3);
+    // }
+
+    // for (let j = 0; j <= Math.PI; j += Math.PI / 32) {
+    //     ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.9)';
+    //     ctx.fillRect(Math.random() * -10 + 105 + Math.cos(j) * i * 0.75, 100 + Math.sin(j) * i * 0.75, 3, 3);
+    // }
+
+    const i2 = 60 - i;
+
+    // for (let j = Math.PI / 16; j <= Math.PI - Math.PI / 16; j += Math.PI / 64) {
+    //     ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.9)';
+    //     ctx.fillRect(Math.random() * -20 + 110 + Math.cos(j) * i * 1.2, Math.random() * -20 + 110 + Math.sin(j) * i * 1.2, 2, 2);
+    //     ctx.fillRect(Math.random() * -10 + 105 + Math.cos(j) * i * 1.1, Math.random() * -10 + 100 + Math.sin(j) * i * 1.1, 1, 1);
+    //     ctx.fillRect(Math.random() * -20 + 110 + Math.cos(j) * i2 * 1.2, Math.random() * -20 + 110 + Math.sin(j) * i2 * 1.2, 2, 2);
+    //     ctx.fillRect(Math.random() * -10 + 105 + Math.cos(j) * i2 * 1.1, Math.random() * -10 + 100 + Math.sin(j) * i2 * 1.1, 1, 1);
+    // }
+
+    for (let j = Math.PI / 4; j <= Math.PI - Math.PI / 4; j += Math.PI / 128) {
+        ctx.fillStyle = 'rgba(' + (255 - i * 2) + ', ' + (255 - i) + ', 255, 0.9)';
+        ctx.fillRect(
+            Math.random() * -20 + 110 + Math.cos(j) * i * 0.6,
+            Math.random() * -20 + 110 + Math.sin(j) * i * 0.6,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+        ctx.fillRect(
+            Math.random() * -10 + 105 + Math.cos(j) * i * 0.4,
+            Math.random() * -10 + 100 + Math.sin(j) * i * 0.4,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+        ctx.fillRect(
+            Math.random() * -10 + 105 + Math.cos(j) * i * 0.2,
+            Math.random() * -10 + 100 + Math.sin(j) * i * 0.2,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+        ctx.fillRect(
+            Math.random() * -20 + 110 + Math.cos(j) * i2 * 0.6,
+            Math.random() * -20 + 110 + Math.sin(j) * i2 * 0.6,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+        ctx.fillRect(
+            Math.random() * -10 + 105 + Math.cos(j) * i2 * 0.4,
+            Math.random() * -10 + 100 + Math.sin(j) * i2 * 0.4,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+        ctx.fillRect(
+            Math.random() * -10 + 105 + Math.cos(j) * i2 * 0.2,
+            Math.random() * -10 + 100 + Math.sin(j) * i2 * 0.2,
+            Math.random() * 3,
+            Math.random() * 3
+        );
+    }
+});
+
+/******** */
 
 let i = 0;
 
@@ -179,27 +261,31 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
         (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod()) //||
         // (noteLevel && o.letterLevel + Audio.mod - 32 * Audio.secondsPerBeat <= Audio.getTimeNotMod())
     ) {
-        console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
-
-        o.letter = getAudioLetter(o.wordLen ?? 0);
-        o.letterColor = lastWordColor;
-        o.letterLevel = Audio.getTimeNotMod();
-        console.log(o.letterLevel);
+        // console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
+        // o.letter = getAudioLetter(o.wordLen ?? 0);
+        // o.letterColor = lastWordColor;
+        // o.letterLevel = Audio.getTimeNotMod();
+        // console.log(o.letterLevel);
         // debugger;
-        o.hit = false;
+        // o.hit = false;
     }
 
+    if (!o.letter) {
+        return;
+    }
     ctx.fillStyle = o.hit ? 'yellow' : o.letterColor || 'purple';
     ctx.fillText(
         `${o.letter.toUpperCase()}`, // {octave}${o.tone}- // toBeat=${toBeat}
         50 + (o.slot - 1) * 125 + 5,
         735 + -toBeat * 100 + 20 /* to put the letter to the middle */
     );
+
+    thingy.draw(ctx, 50 + (o.slot - 1) * 125 + 5, 735 + -toBeat * 100 + 20, o.from * 2.5);
 };
 
 const draw = () => {
     i = (i + 1) % 255;
-    ctx.fillStyle = `rgb(255, ${i}, 104)`;
+    ctx.fillStyle = `rgb(0,0,0,0.9)`;
     ctx.fillRect(0, 0, w, h);
 
     const offset = 0;
@@ -220,9 +306,6 @@ const draw = () => {
     x = mouseX;
     y = mouseY;
 
-    // ctx.drawImage(thingy.getFrame(), x, y);
-    thingy.draw(ctx, x, y);
-
     ctx.font = '50px Arial';
     ctx.fillText(currentWord, 100, 100);
     ctx.fillStyle = 'red';
@@ -236,7 +319,7 @@ const draw = () => {
     //     200,
     //     200
     // );
-    ctx.fillText(`Audio.getLevel()=${Audio.getLevel()}`, 400, 500);
+    // ctx.fillText(`Audio.getLevel()=${Audio.getLevel()}`, 400, 500);
     // ctx.fillText(
     //     `
     //     audioTime=${Audio.getTime()}`,
@@ -244,10 +327,16 @@ const draw = () => {
     //     430
     // );
 
-    ['rgba(255,255,0,0.4)', 'rgba(255,0,0,0.4)', 'rgba(0,255,0,0.4)', 'rgba(0,255,255,0.4)'].forEach((color, i) => {
+    ['rgba(255,255,255,0.5)', 'rgba(0,0,0,0.5)', 'rgba(255,255,255,0.5)', 'rgba(0,0,0,0.5)'].forEach((color, i) => {
         ctx.fillStyle = color;
         ctx.fillRect(i * 125, 0, 125, 1000);
     });
+
+    const shipPanel = Math.floor(mouseX / 125);
+    if (shipPanel < 4) {
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillRect(shipPanel * 125, 0, 125, 1000);
+    }
 
     const audioTime = Audio.getTime();
     const auditTimeNotMod = Audio.getTimeNotMod();
@@ -275,7 +364,28 @@ const draw = () => {
         drawNote(o, toBeat3);
     });
 
+    // ctx.drawImage(thingy.getFrame(), x, y);
+    spaceship.draw(ctx, x, y);
+
     window.requestAnimationFrame(draw);
+};
+
+const initSheet = () => {
+    Audio.sheet.forEach((o) => {
+        if (o.group == null) {
+            return;
+        }
+
+        o.letter = getAudioLetter(o.wordLen ?? 0);
+
+        console.log(`${o.from} letter=${o.letter}`);
+
+        o.letterColor = lastWordColor;
+        o.letterLevel = Audio.getTimeNotMod();
+        // console.log(o.letterLevel);
+        // debugger;
+        o.hit = false;
+    });
 };
 
 const main = () => {
@@ -283,6 +393,8 @@ const main = () => {
     ctx = getContext(canvas);
     document.body.appendChild(canvas);
     resize();
+
+    initSheet();
 
     window.requestAnimationFrame(draw);
     window.addEventListener('resize', resize);
