@@ -2,11 +2,11 @@ import { SheetItem } from './types';
 
 let mainGainNode: GainNode;
 
-const MAX_TICK = 128;
+const MAX_TICK = 128 + 64;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (120 * 4); // 120 je OK
+const secondsPerBeat = 60.0 / (80 * 4); // 80 a 120 je OK
 
 const mod = secondsPerBeat * MAX_TICK;
 
@@ -273,6 +273,32 @@ const sheet: SheetItem[] = [
     { octave: 5, tone: 'D', from: 64 + 53, length: 1, slot: 3, label: 'B', wordLen: 5, group: 7 },
     { octave: 5, tone: 'A', from: 64 + 54, length: 1, slot: 4, label: 'B', wordLen: 5, group: 7 },
     { octave: 5, tone: 'B', from: 64 + 56, length: 4, slot: 3, label: 'B', wordLen: 5, group: 7 },
+
+    //
+
+    { octave: 3, tone: 'A', from: 128 + 0, length: 16, slot: 0 }, // bass
+    { octave: 6, tone: 'E', from: 128 + 0, length: 8, slot: 1, label: 'B', wordLen: 4, group: 4 },
+    { octave: 4, tone: 'B', from: 128 + 8, length: 1, slot: 4, label: 'C', wordLen: 4, group: 4 },
+    { octave: 5, tone: 'C', from: 128 + 9, length: 1, slot: 3, label: 'D', wordLen: 4, group: 4 },
+    { octave: 4, tone: 'A', from: 128 + 10, length: 3, slot: 2, label: 'E', wordLen: 4, group: 4 },
+
+    { octave: 3, tone: 'G', from: 128 + 16, length: 16, slot: 0 }, // bass
+    { octave: 6, tone: 'D', from: 128 + 16, length: 6, slot: 1, label: 'G', wordLen: 4, group: 5 },
+    { octave: 4, tone: 'B', from: 128 + 22, length: 1, slot: 2, label: 'H', wordLen: 4, group: 5 },
+    { octave: 5, tone: 'C', from: 128 + 24, length: 1, slot: 3, label: 'I', wordLen: 4, group: 5 },
+    { octave: 5, tone: 'D', from: 128 + 26, length: 4, slot: 4, label: 'J', wordLen: 4, group: 5 },
+
+    { octave: 3, tone: 'D', from: 128 + 32, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'B', from: 128 + 32, length: 4, slot: 1, label: 'B', wordLen: 4, group: 6 },
+    { octave: 4, tone: 'A', from: 128 + 36, length: 2, slot: 2, label: 'B', wordLen: 4, group: 6 },
+    { octave: 5, tone: 'E', from: 128 + 38, length: 2, slot: 3, label: 'B', wordLen: 4, group: 6 },
+    { octave: 5, tone: 'F', from: 128 + 40, length: 4, slot: 4, label: 'B', wordLen: 4, group: 6 },
+
+    { octave: 3, tone: 'G', from: 128 + 48, length: 16, slot: 0 }, // bass
+    { octave: 5, tone: 'C', from: 128 + 48, length: 1, slot: 4, label: 'B', wordLen: 4, group: 7 },
+    { octave: 4, tone: 'A', from: 128 + 50, length: 1, slot: 3, label: 'B', wordLen: 4, group: 7 },
+    { octave: 5, tone: 'C', from: 128 + 52, length: 2, slot: 2, label: 'B', wordLen: 4, group: 7 },
+    { octave: 4, tone: 'B', from: 128 + 54, length: 4, slot: 1, label: 'B', wordLen: 4, group: 7 },
 ];
 
 let tickCnt = 0;

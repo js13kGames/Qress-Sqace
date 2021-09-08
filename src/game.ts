@@ -327,7 +327,7 @@ const draw = () => {
     //     430
     // );
 
-    ['rgba(255,255,255,0.5)', 'rgba(0,0,0,0.5)', 'rgba(255,255,255,0.5)', 'rgba(0,0,0,0.5)'].forEach((color, i) => {
+    ['rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)', 'rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)'].forEach((color, i) => {
         ctx.fillStyle = color;
         ctx.fillRect(i * 125, 0, 125, 1000);
     });
@@ -344,8 +344,18 @@ const draw = () => {
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
         const noteLevel = Math.floor((auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat);
 
-        if (o.letter === lastKey && lastKeyTime - 0.5 < shouldPlayAt && shouldPlayAt < lastKeyTime + 0.5) {
+        if (
+            o.hit !== true &&
+            o.letter === lastKey &&
+            lastKeyTime - 0.5 < shouldPlayAt &&
+            shouldPlayAt < lastKeyTime + 0.5 &&
+            Math.floor(mouseX / 125) === o.slot - 1
+        ) {
             // debugger;
+
+            const diff = Math.abs(shouldPlayAt - lastKeyTime);
+            console.log(`letter=${o.letter} - diff=${diff}`);
+
             o.hit = true;
         }
 

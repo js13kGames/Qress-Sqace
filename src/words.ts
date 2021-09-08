@@ -4,30 +4,19 @@
 // https://github.com/dwyl/english-words/blob/master/words_alpha.txt
 // cat ~/Desktop/words_alpha.txt | egrep -v "y|u|i|o|p|h|j|k|l|n|m" | grep -x '.\{12,13\}' | wc -l
 
-const wordsRaw4 = `acer
-acre
-acta
+const wordsRaw4 = `acre
 agar
 aged
-ages
 arab
 arcs
 area
 arse
-arts
 aver
-awes
-axed
-axes
 babe
-bads
 bags
-bait
 barb
 bard
 bare
-barf
-bars
 bart
 base
 bass
@@ -38,13 +27,10 @@ beef
 beer
 bees
 beet
-begs
 bert
 best
 beta
 brag
-bras
-brat
 bred
 bret
 brew
@@ -56,8 +42,6 @@ cart
 casa
 case
 cast
-cate
-cats
 cave
 caws
 cert
@@ -65,8 +49,6 @@ crab
 crag
 craw
 crew
-dabs
-dads
 daft
 dare
 data
@@ -79,9 +61,6 @@ dear
 debt
 deed
 deer
-defs
-desc
-dews
 drag
 draw
 drew
@@ -110,7 +89,6 @@ fees
 feet
 fest
 feta
-fire
 frag
 fred
 free
@@ -133,7 +111,6 @@ rags
 rate
 rats
 rave
-raws
 raze
 read
 rear
@@ -158,9 +135,7 @@ stat
 swag
 tear
 teas
-tire
 tyre
-tool
 tree
 vase
 vast
@@ -178,7 +153,6 @@ wave
 wear
 webs
 weed
-were
 west
 zest
 zeta`;
