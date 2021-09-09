@@ -25,7 +25,6 @@ bear
 beat
 beef
 beer
-bees
 beet
 bert
 best
@@ -116,14 +115,12 @@ read
 rear
 rect
 reef
-refs
 safe
 saga
 sage
 sara
 save
 scar
-scat
 sear
 seas
 seat
@@ -134,7 +131,6 @@ star
 stat
 swag
 tear
-teas
 tyre
 tree
 vase

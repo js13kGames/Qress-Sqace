@@ -7,6 +7,10 @@ import { SheetItem } from './types';
 let lastKey = '';
 let lastKeyTime = 0;
 
+let score = 0;
+let maxScore = 0;
+let lastLevel = 0;
+
 let tutorial = ['_qress_sqace', 'great_'];
 let tutorialFinished = 0;
 
@@ -234,7 +238,7 @@ const getAudioLetter = (len: number) => {
     return ret;
 };
 
-const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
+const drawNote = (o: SheetItem, toBeat: number) => {
     ctx.fillStyle = o.hit ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)';
 
     if (!o.to) {
@@ -256,19 +260,19 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
         o.letterLevel = 0;
     }
 
-    if (
-        !o.letter ||
-        (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod()) //||
-        // (noteLevel && o.letterLevel + Audio.mod - 32 * Audio.secondsPerBeat <= Audio.getTimeNotMod())
-    ) {
-        // console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
-        // o.letter = getAudioLetter(o.wordLen ?? 0);
-        // o.letterColor = lastWordColor;
-        // o.letterLevel = Audio.getTimeNotMod();
-        // console.log(o.letterLevel);
-        // debugger;
-        // o.hit = false;
-    }
+    // if (
+    //     !o.letter ||
+    //     (noteLevel && o.letterLevel + Audio.mod < Audio.getTimeNotMod()) //||
+    //     // (noteLevel && o.letterLevel + Audio.mod - 32 * Audio.secondsPerBeat <= Audio.getTimeNotMod())
+    // ) {
+    //     // console.log(`NEW o.letterLevel=${o.letterLevel}  - ${o.letterLevel + o.from * Audio.secondsPerBeat} < ${Audio.getTimeNotMod()}`);
+    //     // o.letter = getAudioLetter(o.wordLen ?? 0);
+    //     // o.letterColor = lastWordColor;
+    //     // o.letterLevel = Audio.getTimeNotMod();
+    //     // console.log(o.letterLevel);
+    //     // debugger;
+    //     // o.hit = false;
+    // }
 
     if (!o.letter) {
         return;
@@ -284,6 +288,15 @@ const drawNote = (o: SheetItem, toBeat: number, noteLevel?: number) => {
 };
 
 const draw = () => {
+    if (lastLevel !== Audio.getLevel()) {
+        lastLevel = Audio.getLevel();
+
+        if (score > maxScore) {
+            maxScore = score;
+        }
+        score = 0;
+    }
+
     i = (i + 1) % 255;
     ctx.fillStyle = `rgb(0,0,0,0.9)`;
     ctx.fillRect(0, 0, w, h);
@@ -306,19 +319,11 @@ const draw = () => {
     x = mouseX;
     y = mouseY;
 
-    ctx.font = '50px Arial';
-    ctx.fillText(currentWord, 100, 100);
-    ctx.fillStyle = 'red';
-    ctx.fillText(currentPrefix, 100, 100);
+    // ctx.font = '50px Arial';
+    // ctx.fillText(currentWord, 100, 100);
+    // ctx.fillStyle = 'red';
+    // ctx.fillText(currentPrefix, 100, 100);
 
-    // const tick = Audio.getTick();
-    ctx.fillStyle = 'blue';
-    ctx.font = '30px Arial';
-    // ctx.fillText(
-    //     `music frame: ${tick}, next4th: ${tick - (tick % 4)}, p=${p}`,
-    //     200,
-    //     200
-    // );
     // ctx.fillText(`Audio.getLevel()=${Audio.getLevel()}`, 400, 500);
     // ctx.fillText(
     //     `
@@ -327,10 +332,15 @@ const draw = () => {
     //     430
     // );
 
-    ['rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)', 'rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)'].forEach((color, i) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(i * 125, 0, 125, 1000);
-    });
+    // ['rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)', 'rgba(20,0,0,0.9)', 'rgba(0,20,0,0.5)'].forEach((color, i) => {
+    //     ctx.fillStyle = color;
+    //     ctx.fillRect(i * 125, 0, 125, 1000);
+    // });
+
+    for (let i = 1; i <= 4; i++) {
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fillRect(i * 125, 0, 3, 1000);
+    }
 
     const shipPanel = Math.floor(mouseX / 125);
     if (shipPanel < 4) {
@@ -339,10 +349,10 @@ const draw = () => {
     }
 
     const audioTime = Audio.getTime();
-    const auditTimeNotMod = Audio.getTimeNotMod();
+    // const auditTimeNotMod = Audio.getTimeNotMod();
     Audio.getObjectsInRange().forEach((o) => {
         const shouldPlayAt = o.from * Audio.secondsPerBeat;
-        const noteLevel = Math.floor((auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat);
+        // const noteLevel = Math.floor((auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat);
 
         if (
             o.hit !== true &&
@@ -357,10 +367,16 @@ const draw = () => {
             console.log(`letter=${o.letter} - diff=${diff}`);
 
             o.hit = true;
+            score += 1;
+        }
+
+        // clear old notes
+        if (o.from === Audio.getTick() - 64 || o.from === Audio.getTick() + 64) {
+            o.hit = false;
         }
 
         const toBeat = shouldPlayAt - audioTime;
-        drawNote(o, toBeat, noteLevel);
+        drawNote(o, toBeat);
 
         const shouldPlayAt2 = (o.from - Audio.MAX_TICK) * Audio.secondsPerBeat;
         // const noteLevel2 = Math.floor(
@@ -376,6 +392,14 @@ const draw = () => {
 
     // ctx.drawImage(thingy.getFrame(), x, y);
     spaceship.draw(ctx, x, y);
+
+    ctx.fillStyle = '#FF3300';
+    ctx.font = '30px Arial';
+    ctx.shadowColor = 'white';
+    ctx.shadowBlur = 7;
+    ctx.lineWidth = 5;
+    ctx.fillText(`score: ${score}/50, replays: ${lastLevel}, maxScore:${maxScore}/50`, 0, 50);
+    ctx.shadowBlur = 0;
 
     window.requestAnimationFrame(draw);
 };
