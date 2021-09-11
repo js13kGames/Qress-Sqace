@@ -45,7 +45,6 @@ cave
 caws
 cert
 crab
-crag
 craw
 crew
 daft
@@ -73,8 +72,6 @@ ever
 face
 fact
 fade
-fads
-fags
 fard
 fare
 fart
@@ -103,12 +100,10 @@ graf
 greg
 grew
 race
-rads
 raft
 rage
 rags
 rate
-rats
 rave
 raze
 read
@@ -137,12 +132,9 @@ vase
 vast
 verb
 wade
-wads
 wage
-wags
 ward
 ware
-wars
 wart
 watt
 wave
@@ -163,7 +155,6 @@ avast
 award
 aware
 aztec
-beads
 beard
 beast
 brace
@@ -176,7 +167,6 @@ carat
 cedar
 cesar
 craft
-crags
 crate
 crave
 dress
@@ -212,14 +202,12 @@ stage
 stare
 start
 state
-stats
 steer
 straw
 swear
 sweat
 sweet
 taste
-tears
 tease
 texas
 trace

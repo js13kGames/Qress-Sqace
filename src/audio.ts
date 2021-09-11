@@ -6,7 +6,24 @@ const MAX_TICK = 128 + 64;
 
 const lookahead = 25;
 const scheduleAheadTime = 0.5;
-const secondsPerBeat = 60.0 / (110 * 4); // 80 a 120 je OK
+let secondsPerBeat = 60.0 / (90 * 4); // 80 a 120 je OK
+const getSecondsPerBeat = () => secondsPerBeat;
+// let difficulty = 0;
+// const setDifficulty = (difficultyArg: number) => {
+//     difficulty = difficultyArg;
+//     if (difficulty === 1) {
+//         secondsPerBeat = 60.0 / (40 * 4);
+//     } else if (difficulty === 2) {
+//         secondsPerBeat = 60.0 / (60 * 4);
+//     } else if (difficulty === 3) {
+//         secondsPerBeat = 60.0 / (80 * 4);
+//     } else if (difficulty === 4) {
+//         secondsPerBeat = 60.0 / (120 * 4);
+//     } else if (difficulty === 5) {
+//         secondsPerBeat = 60.0 / (140 * 4);
+//     }
+// };
+// const getDifficulty = () => difficulty;
 
 const mod = secondsPerBeat * MAX_TICK;
 
@@ -431,7 +448,7 @@ export default {
     startMusic,
     getTick,
     getPlaying,
-    secondsPerBeat,
+    getSecondsPerBeat,
     getPrevNoteTime,
     getNextNoteTime,
     getLevel,
@@ -443,4 +460,6 @@ export default {
     mod,
     MAX_TICK,
     sheet,
+    // setDifficulty,
+    // getDifficulty,
 };

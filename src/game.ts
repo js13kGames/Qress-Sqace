@@ -11,6 +11,9 @@ let score = 0;
 let maxScore = 0;
 let lastLevel = 0;
 
+// 0=show menu, 1=game started
+let gameStarted = 0;
+
 let tutorial = ['_qress_sqace', 'great_'];
 let tutorialFinished = 0;
 
@@ -80,6 +83,15 @@ const mousemove = (e: MouseEvent) => {
 };
 
 const keydown = (e: KeyboardEvent) => {
+    if (gameStarted === 0) {
+        gameStarted = 1;
+        const infoEl = document.getElementById('info');
+        if (infoEl) {
+            infoEl.setAttribute('style', 'display: none');
+            // infoEl.
+        }
+    }
+
     Audio.startMusic();
 
     console.log(`key=${e.key}, next=${nextLetter}`);
@@ -207,6 +219,8 @@ const spaceship = new Thingy(50, 200, 200, (i, ctx) => {
         );
     }
 });
+
+const stars: { x: number; y: number }[] = [];
 
 /******** */
 
@@ -337,6 +351,14 @@ const draw = () => {
     //     ctx.fillRect(i * 125, 0, 125, 1000);
     // });
 
+    stars.forEach((star) => {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillRect(star.x, star.y, 2, 2);
+
+        star.y += 1;
+        star.y %= 1000;
+    });
+
     for (let i = 1; i <= 4; i++) {
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(i * 125, 0, 3, 1000);
@@ -351,7 +373,7 @@ const draw = () => {
     const audioTime = Audio.getTime();
     // const auditTimeNotMod = Audio.getTimeNotMod();
     Audio.getObjectsInRange().forEach((o) => {
-        const shouldPlayAt = o.from * Audio.secondsPerBeat;
+        const shouldPlayAt = o.from * Audio.getSecondsPerBeat();
         // const noteLevel = Math.floor((auditTimeNotMod + shouldPlayAt - audioTime) / Audio.secondsPerBeat);
 
         if (
@@ -378,14 +400,14 @@ const draw = () => {
         const toBeat = shouldPlayAt - audioTime;
         drawNote(o, toBeat);
 
-        const shouldPlayAt2 = (o.from - Audio.MAX_TICK) * Audio.secondsPerBeat;
+        const shouldPlayAt2 = (o.from - Audio.MAX_TICK) * Audio.getSecondsPerBeat();
         // const noteLevel2 = Math.floor(
         //     (auditTimeNotMod + shouldPlayAt2) / Audio.secondsPerBeat
         // );
         const toBeat2 = shouldPlayAt2 - audioTime;
         drawNote(o, toBeat2);
 
-        const shouldPlayAt3 = (o.from + Audio.MAX_TICK) * Audio.secondsPerBeat;
+        const shouldPlayAt3 = (o.from + Audio.MAX_TICK) * Audio.getSecondsPerBeat();
         const toBeat3 = shouldPlayAt3 - audioTime;
         drawNote(o, toBeat3);
     });
@@ -398,7 +420,7 @@ const draw = () => {
     ctx.shadowColor = 'white';
     ctx.shadowBlur = 7;
     ctx.lineWidth = 5;
-    ctx.fillText(`score: ${score}/50, replays: ${lastLevel}, maxScore:${maxScore}/50`, 0, 50);
+    ctx.fillText(`score: ${score}/50, replays: ${lastLevel}, maxScore: ${maxScore}/50`, 0, 50);
     ctx.shadowBlur = 0;
 
     window.requestAnimationFrame(draw);
@@ -429,6 +451,10 @@ const main = () => {
     resize();
 
     initSheet();
+
+    for (let i = 0; i < 30; i++) {
+        stars.push({ x: Math.random() * 400, y: Math.random() * 1000 });
+    }
 
     window.requestAnimationFrame(draw);
     window.addEventListener('resize', resize);
