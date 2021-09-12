@@ -1,4 +1,7 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
-zip ./dist/nesro.zip ./dist/index.html ./dist/game.min.js
-ls -lah ./dist/nesro.zip
+npm run build
+cd dist
+zip nesro.zip index.html game.min.js
+ls -lah nesro.zip
+cd ../

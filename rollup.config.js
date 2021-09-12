@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 import { uglify } from 'rollup-plugin-uglify';
 import copy from 'rollup-plugin-copy';
 
-const compress = false;
+const compress = true;
 
 export default {
     input: 'src/game.ts',
